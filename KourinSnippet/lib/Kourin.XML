@@ -1,0 +1,327 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kourin</name>
+    </assembly>
+    <members>
+        <member name="T:Kourin.IKourinFunction">
+            <summary>
+            スクリプト関数インタフェース
+            </summary>
+        </member>
+        <member name="M:Kourin.IKourinFunction.execute(System.Object[])">
+            <summary>
+            関数を呼び出し結果を返します。
+            </summary>
+            <param name="args">引数</param>
+            <returns>結果値</returns>
+        </member>
+        <member name="P:Kourin.IKourinFunction.name">
+            <summary>
+            関数名を取得します。
+            </summary>
+        </member>
+        <member name="T:Kourin.KourinFunction">
+            <summary>
+            簡易関数実装用クラス
+            関数名と実装式を指定してIKourinFunctionを実装したインスタンスを生成します。
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinFunction.#ctor(System.String,System.Func{System.Object[],System.Object})">
+            <summary>
+            関数名と実装式を指定してインスタンスを生成します。
+            </summary>
+            <param name="name">関数名称</param>
+            <param name="executeMethod">関数実装(入力, 出力)</param>
+        </member>
+        <member name="M:Kourin.KourinFunction.execute(System.Object[])">
+            <summary>
+            関数実行
+            </summary>
+        </member>
+        <member name="P:Kourin.KourinFunction.name">
+            <summary>関数名</summary>
+        </member>
+        <member name="T:Kourin.ScriptFunction">
+            <summary>
+            スクリプト内定義関数用クラス
+            </summary>
+        </member>
+        <member name="T:Kourin.IPluginFunctionFactory">
+            <summary>
+            関数プラグインインタフェース
+            </summary>
+        </member>
+        <member name="M:Kourin.IPluginFunctionFactory.GetPluginFunctions">
+            <summary>
+            エンジンに登録する追加関数クラスのインスタンスリストを返します。
+            </summary>
+        </member>
+        <member name="P:Kourin.IPluginFunctionFactory.KeyName">
+            <summary>
+            プラグインを判別するキーワードです。
+            </summary>
+        </member>
+        <member name="T:Kourin.KourinEngine">
+            <summary>
+            スクリプトエンジン
+            </summary>
+        </member>
+        <member name="F:Kourin.KourinEngine.functionTable">
+            <summary>
+            関数テーブル
+            </summary>
+        </member>
+        <member name="F:Kourin.KourinEngine.variables">
+            <summary>
+            変数テーブル
+            </summary>
+        </member>
+        <member name="F:Kourin.KourinEngine.svariables">
+            <summary>
+            変数テーブル（スコープ）
+            </summary>
+        </member>
+        <member name="F:Kourin.KourinEngine.beStop">
+            <summary>
+            停止要求フラグ
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.setFunction(Kourin.IKourinFunction)">
+            <summary>
+            拡張関数を設定します。
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.releaseFunction(System.String)">
+            <summary>
+            関数を削除します。
+            </summary>
+            <param name="name">関数名</param>
+        </member>
+        <member name="M:Kourin.KourinEngine.loadPluginDll(System.String,System.String)">
+            <summary>
+            DLLのパスを指定してプラグイン関数を読み込みます。
+            keyを指定すると該当するKeyNameを持つプラグインのみを読み込みます。
+            </summary>
+            <param name="path">DLLパス</param>
+            <param name="key">シリーズキー名</param>
+        </member>
+        <member name="M:Kourin.KourinEngine.execute(System.String)">
+            <summary>
+            スクリプトを実行します。
+            </summary>
+            <param name="script">スクリプト文字列</param>
+            <returns>結果値</returns>
+        </member>
+        <member name="M:Kourin.KourinEngine.execute(System.IO.TextReader)">
+            <summary>
+            スクリプトを実行します。
+            </summary>
+            <param name="reader">スクリプト文字列取得リーダ</param>
+            <returns>結果値</returns>
+        </member>
+        <member name="M:Kourin.KourinEngine.stop">
+            <summary>
+            スクリプトを停止します。
+            このメソッドを呼んだ時点で実行されている処理ブロックが
+            完了した時点でKourinAbortExeptionが発生します。
+            スクリプトが既に停止している場合、何も起りません。
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.rideOne(System.String)">
+            <summary>
+            単位実行
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.fairScriptText(System.String)">
+            <summary>
+            コメントとスペースを削除整理する
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.splitScript(System.String)">
+            <summary>
+            字句解析
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.checkError(System.String)">
+            <summary>
+            字句解析前チェック
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.checkError(System.Collections.Generic.List{Kourin.KourinEngine.Token})">
+            <summary>
+            字句解析後チェック
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.skipBlock(System.String,System.Int32,System.Char,System.Char,System.Int32,System.String[]@)">
+            <summary>
+            一番外側の[]で区切られた範囲の終わりまでインデクスを進める
+            </summary>
+            <param name="script">スクリプト</param>
+            <param name="startIndex">開始インデクス（[の位置）</param>
+            <param name="sChar">開始括弧文字</param>
+            <param name="eChar">終了括弧文字</param>
+            <param name="separater">分割子。使用しない場合-1</param>
+            <param name="box">分割子で区切られた括弧内部文字列</param>
+            <returns>ブロック後のインデクス（]の次）</returns>
+        </member>
+        <member name="M:Kourin.KourinEngine.isStrEndChar(System.String,System.Int32)">
+            <summary>
+            該当箇所が文字列表現の終了位置か否か
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.toRPN(System.Collections.Generic.List{Kourin.KourinEngine.Token})">
+            <summary>
+            逆ポーランド記法変換
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.runTokens(System.Collections.Generic.List{Kourin.KourinEngine.Token})">
+            <summary>
+            トークン実行
+            </summary>
+            <param name="tokens">逆ポーランド記法に解析されたトークンリスト</param>
+            <returns>結果値</returns>
+        </member>
+        <member name="M:Kourin.KourinEngine.callFunction(Kourin.KourinEngine.FunctionToken)">
+            <summary>
+            関数呼び出し
+            </summary>
+        </member>
+        <member name="M:Kourin.KourinEngine.callFunction(System.String,System.Object[])">
+            <summary>
+            関数呼び出し
+            </summary>
+        </member>
+        <member name="P:Kourin.KourinEngine.isRunning">
+            <summary>
+            スクリプト実行中か否かを返します。
+            </summary>
+        </member>
+        <member name="P:Kourin.KourinEngine.functions">
+            <summary>
+            登録済み関数一覧
+            </summary>
+        </member>
+        <member name="T:Kourin.KourinEngine.Variable">
+            <summary>
+            変数用クラス
+            </summary>
+        </member>
+        <member name="T:Kourin.KourinException">
+            <summary>
+            スクリプト実行時例外
+            </summary>
+        </member>
+        <member name="P:Kourin.KourinException.ScriptStackTrace">
+            <summary>
+            スクリプトスタックトレース
+            </summary>
+        </member>
+        <member name="T:Kourin.KourinAbortException">
+            <summary>
+            スクリプト中断要求例外
+            </summary>
+        </member>
+        <member name="T:Kourin.PresetFunctions">
+            <summary>
+            プリセット関数群
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_EXECUTIONALL">
+            <summary>
+            分割実行式用関数
+            渡された引数の一番最後を返す。この関数が呼ばれる前に引数部分は既に実行されている。
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_CAT">
+            <summary>
+            文字列結合
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_MathBase">
+            <summary>
+            演算系スーパークラス
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_CompareBase">
+            <summary>
+            比較系スーパークラス
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_AndOrBase">
+            <summary>
+            論理演算系スーパークラス
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_TRUE">
+            <summary>
+            trueリテラル
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_FALSE">
+            <summary>
+            falseリテラル
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_NULL">
+            <summary>
+            nullリテラル
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_IF">
+            <summary>
+            IF関数（特別関数：実装はEngine参照）
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_REPEAT">
+            <summary>
+            REPEAT関数（特別関数：実装はEngine参照）
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_WHILE">
+            <summary>
+            WHILE関数（特別関数：実装はEngine参照）
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_RETURN">
+            <summary>
+            RETRUN関数
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_TOSCRIPT">
+            <summary>
+            スクリプト化（特別関数：実装はEngine参照）
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_DATE">
+            <summary>
+            日時取得
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_FORMAT">
+            <summary>
+            文字列フォーマット
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_INT">
+            <summary>
+            整数変換
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_DOUBLE">
+            <summary>
+            実数変換
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_METHOD">
+            <summary>
+            クラスメソッド呼び出し
+            </summary>
+        </member>
+        <member name="T:Kourin.KFunc_PROPERTY">
+            <summary>
+            クラスプロパティ呼び出し
+            </summary>
+        </member>
+    </members>
+</doc>
