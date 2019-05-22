@@ -56,6 +56,21 @@ namespace KourinSnippet
                 return null;
             }));
 
+            //外部プロセスを実行します。
+            kourin.setFunction(new KourinFunction("START", (args)=>{
+                if(args.Length == 0) return null;
+                var info = new System.Diagnostics.ProcessStartInfo();
+                info.FileName = args[0].ToString();
+                info.Arguments = args.Length > 1 ? args[1].ToString() : null;
+                info.UseShellExecute = true;
+                var p = System.Diagnostics.Process.Start(info);
+
+                if (args.Length > 2 && (bool)args[2]) {
+                    p.WaitForExit();
+                }
+                return null;
+            }));
+
             return kourin;
         }
     }

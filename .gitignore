@@ -4,7 +4,11 @@ Bin/
 obj/
 log/
 Log/
+dll/
 Dll/
+lib/
+Lib/
+Properties/
 
 *.pfx
 *.png
@@ -13,6 +17,7 @@ Dll/
 *.exe
 *.dll
 *.suo
+*.sln
 *.user
 *.db
 *.log
