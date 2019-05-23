@@ -70,6 +70,62 @@ namespace KourinSnippet
                 }
                 return null;
             }));
+            
+            //コレクションのインデクス位置のデータを返します。
+            kourin.setFunction(new KourinFunction("ElementAt", (args)=>{
+                return (args[0] as IEnumerable<object>).ElementAt<object>((int)args[1]);
+            }));
+            
+            //コレクションの要素数を返します。
+            kourin.setFunction(new KourinFunction("COUNT", (args)=>{
+                return (args[0] as IEnumerable<object>).Count();
+            }));
+
+            //文字列操作関連
+
+            //TRIMします。
+            kourin.setFunction(new KourinFunction("TRIM", (args)=>{
+                return args[0].ToString().Trim();
+            }));
+            
+            //Regex.Splitします。
+            kourin.setFunction(new KourinFunction("SPLIT", (args)=>{
+                var r = new System.Text.RegularExpressions.Regex((string)args[1].ToString());
+                return r.Split((string)args[0]);
+            }));
+
+            //Regex.Replacecします。
+            kourin.setFunction(new KourinFunction("REPLACE", (args)=>{
+                var r = new System.Text.RegularExpressions.Regex((string)args[1].ToString());
+                return r.Replace((string)args[0], (string)args[2]);
+            }));
+            
+            //Substringします。
+            kourin.setFunction(new KourinFunction("SUBSTRING", (args)=>{
+                return ((string)args[0]).Substring((int)args[1], (int)args[2]);
+            }));
+
+            //左Substringします。
+            kourin.setFunction(new KourinFunction("LEFT", (args)=>{
+                var s = (string)args[0];
+                return s.Substring(0, (int)args[1]);
+            }));
+
+            //右Substringします。
+            kourin.setFunction(new KourinFunction("RIGHT", (args)=>{
+                var s = (string)args[0];
+                return s.Substring(s.Length-(int)args[1], (int)args[1]);
+            }));
+            
+            //Indexofします。
+            kourin.setFunction(new KourinFunction("INDEXOF", (args)=>{
+                return ((string)args[0]).IndexOf((string)args[1]);
+            }));
+
+            //文字列の文字数を返します。
+            kourin.setFunction(new KourinFunction("LEN", (args)=>{
+                return ((string)args[0]).Length;
+            }));
 
             return kourin;
         }
