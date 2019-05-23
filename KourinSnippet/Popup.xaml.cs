@@ -67,6 +67,21 @@ namespace KourinSnippet
                 OpenItem((ListBox)sender, ((ListBox)sender).SelectedIndex);
             else if (e.Key == Key.Left)
                 CloseItem((ListBox)sender);
+            else if (e.Key == Key.Up) {
+                var list = (ListBox)sender;
+                if (list.SelectedIndex == 0) {
+                    list.SelectedIndex = list.Items.Count - 1;
+                    ((ListBoxItem)list.ItemContainerGenerator.ContainerFromIndex(list.Items.Count - 1)).Focus();
+                    e.Handled = true;
+                }
+            } else if (e.Key == Key.Down) {
+                var list = (ListBox)sender;
+                if (list.SelectedIndex == list.Items.Count - 1) {
+                    list.SelectedIndex = 0;
+                    ((ListBoxItem)list.ItemContainerGenerator.ContainerFromIndex(0)).Focus();
+                    e.Handled = true;
+                }
+            }
         }
 
         private void ItemList_SelectionChanged(object sender, SelectionChangedEventArgs e)
