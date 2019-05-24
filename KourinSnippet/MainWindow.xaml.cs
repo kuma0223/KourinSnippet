@@ -31,7 +31,15 @@ namespace KourinSnippet
         private KourinEngine kourin;
         private HotkeySetter HKSetter = new HotkeySetter();
         private ClipboardChecker CBChecker = new ClipboardChecker();
+        
+        /// <summary>
+        /// スニペット要素コレクション
+        /// </summary>
         private List<SnippetItem> SnippetItems;
+        
+        /// <summary>
+        /// クリップボード履歴リスト
+        /// </summary>
         private LinkedList<HistoryItem> ClipbordHistory = new LinkedList<HistoryItem>();
 
         //◆━━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
@@ -188,6 +196,14 @@ namespace KourinSnippet
         private void Folder_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(Shared.MyPath+"/Items");
+        }
+        /// <summary>
+        /// 履歴クリアボタン
+        /// </summary>
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClipbordHistory.Clear();
+            MessageBox.Show("クリップボード履歴をクリアしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <summary>
