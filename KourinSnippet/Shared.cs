@@ -10,5 +10,6 @@ namespace KourinSnippet
     {
         public static string MyPath;
         public static Setting Setting;
+        public static Bank.LogFileWriter Logger;
     }
 }

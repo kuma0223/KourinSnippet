@@ -58,6 +58,7 @@
     </ApplicationDefinition>
     <Compile Include="ClipboardChecker.cs" />
     <Compile Include="HistoryItem.cs" />
+    <Compile Include="LogFileWriter.cs" />
     <Compile Include="MyKourin.cs" />
     <Compile Include="Popup2.xaml.cs">
       <DependentUpon>Popup2.xaml</DependentUpon>
