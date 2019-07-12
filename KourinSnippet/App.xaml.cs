@@ -19,6 +19,7 @@ namespace KourinSnippet
         {
             this.Startup += this.Application_Startup;
             this.Exit += this.Application_Exit;
+            this.DispatcherUnhandledException += this.Application_DispatcherUnhandledException;
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
@@ -37,7 +38,20 @@ namespace KourinSnippet
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            if (Shared.Logger != null) Shared.Logger.write("ApplicationExit");
             if(mutex != null) mutex.Close();
+        }
+
+        /// <summary>
+        /// 例外処理
+        /// </summary>
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs args)
+        {
+            try {
+                Shared.Logger.write(Bank.LogTypes.ERROR, "未処理例外/" + args.Exception.ToString());
+            }
+            catch (Exception) { }
+		    args.Handled = true;
         }
     }
 }
