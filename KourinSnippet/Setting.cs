@@ -11,6 +11,7 @@ namespace KourinSnippet
         public int PosX;
         public int PosY;
         public bool PopupCenter;
+        public int Interval = 100;
         public SnippetSetting Snippet;
         public HistorySetting History;
     }

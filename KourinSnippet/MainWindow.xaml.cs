@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 //using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using Kourin;
+using Bank;
 
 namespace KourinSnippet
 {
@@ -31,7 +32,15 @@ namespace KourinSnippet
         private KourinEngine kourin;
         private HotkeySetter HKSetter = new HotkeySetter();
         private ClipboardChecker CBChecker = new ClipboardChecker();
+        
+        /// <summary>
+        /// スニペット要素コレクション
+        /// </summary>
         private List<SnippetItem> SnippetItems;
+        
+        /// <summary>
+        /// クリップボード履歴リスト
+        /// </summary>
         private LinkedList<HistoryItem> ClipbordHistory = new LinkedList<HistoryItem>();
 
         //◆━━━━━━━━━━━━━━━━━━━━━━━━━━━━◆
@@ -49,6 +58,13 @@ namespace KourinSnippet
             //設定読み込み
             Shared.Setting = (Setting)Bank.XMLReader.readXML(Shared.MyPath + "/Setting.xml", typeof(Setting));
 
+            //ロガー
+            Shared.Logger = new Bank.LogFileWriter();
+            Shared.Logger.folder = Shared.MyPath + "/log";
+            Shared.Logger.name = "";
+            Shared.Logger.deleteTime = 7;
+            Shared.Logger.deleteLog();
+
             //アイテム読み込み
             ReloadItems();
 
@@ -63,8 +79,10 @@ namespace KourinSnippet
                 HKSetter.SetHotKey(handle, HotkeyId2, Shared.Setting.History.Hotkey.ModKey, Shared.Setting.History.Hotkey.key);
 
             //クリップボード監視設定
-            CBChecker.ClipbordAppended += ClipbordAppended; 
-            if(Shared.Setting.History.enable) CBChecker.SetViewer(handle);
+            if (Shared.Setting.History.enable) { 
+                CBChecker.ClipbordAppended += ClipbordAppended; 
+                CBChecker.SetViewer(handle);
+            }
             
             this.Top = Shared.Setting.PosY + (Shared.Setting.PosY<0 ? System.Windows.SystemParameters.PrimaryScreenHeight : 0);
             this.Left = Shared.Setting.PosX + (Shared.Setting.PosX<0 ? System.Windows.SystemParameters.PrimaryScreenWidth : 0);
@@ -189,6 +207,14 @@ namespace KourinSnippet
         {
             System.Diagnostics.Process.Start(Shared.MyPath+"/Items");
         }
+        /// <summary>
+        /// 履歴クリアボタン
+        /// </summary>
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            ClipbordHistory.Clear();
+            MessageBox.Show("クリップボード履歴をクリアしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         /// <summary>
         /// クリップボード監視ハンドラ
@@ -291,18 +317,24 @@ namespace KourinSnippet
                     default:
                         text = target.Text; break;
                 }
+            }catch(KourinException ex){
+                Shared.Logger.write(LogTypes.ERROR, "スクリプトエラー/" + ex.Message + Environment.NewLine + ex.ScriptStackTrace);
+                MessageBox.Show("スクリプトエラー/" + ex.Message + Environment.NewLine + ex.ScriptStackTrace);
             }catch(Exception ex) {
+                Shared.Logger.write(LogTypes.ERROR, "実行時エラー/" + ex.ToString());
                 MessageBox.Show("実行時エラー/" + ex.GetType().Name + "/" + ex.Message);
             }
             if(text == null) return;
 
             //クリップボードに設定
             try { System.Windows.Clipboard.SetText(text); }
-            catch (COMException) { }
-            //COMExceptionが出てもできてる場合が多い
+            catch (COMException ex) {
+                //COMExceptionが出てもできてる場合が多い
+                Shared.Logger.write(LogTypes.ERROR, "Clipboard.SetText異常/" + ex.ToString());
+            }
             
             //ウィンドウのフォーカスが戻るまで一応少し間を空ける
-            System.Threading.Thread.Sleep(100);
+            System.Threading.Thread.Sleep(Shared.Setting.Interval);
 
             //貼り付け
             Func<int, int, Input> CreateKeyInput = (vkey, flag)=>{
@@ -328,6 +360,7 @@ namespace KourinSnippet
             //ChromeやVisualStudioは受け付けない。
             //SendMessage(focusWHnd, WM_PASTE, 0, 0);
         }
+
         private string ExecuteScript(SnippetItem target)
         {
             if(target.Text == null) return null;
@@ -345,6 +378,7 @@ namespace KourinSnippet
             MyKourin.Output = null;
             return output;
         }
+
         private string ExecuteCommand(SnippetItem target)
         {
             if (target.Text == "ExecScript")
