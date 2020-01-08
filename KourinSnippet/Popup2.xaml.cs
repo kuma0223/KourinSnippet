@@ -70,6 +70,11 @@ namespace KourinSnippet
             if(((ListBox)sender).SelectedItem != null)
                 setToolTip(((HistoryItem)((ListBox)sender).SelectedItem).Text);
         }
+        
+        private void Item_DoubleClick(object sender, MouseButtonEventArgs e) {
+            var item = (sender as ListBoxItem).DataContext as HistoryItem;
+            ClosePopup(item);
+        }
 
         private void setToolTip(string text)
         {
