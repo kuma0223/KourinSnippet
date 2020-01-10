@@ -79,6 +79,9 @@
       <DependentUpon>Popup2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting.cs" />
+    <Compile Include="SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared.cs" />
     <Compile Include="SnippetItem.cs" />
     <Compile Include="XMLReader.cs" />
@@ -100,6 +103,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Popup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

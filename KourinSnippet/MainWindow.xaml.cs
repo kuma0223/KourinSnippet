@@ -208,6 +208,17 @@ namespace KourinSnippet
             System.Diagnostics.Process.Start(Shared.MyPath+"/Items");
         }
         /// <summary>
+        /// 設定ボタン
+        /// </summary>
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+            var wind = new SettingWindow();
+            wind.DataContext = Shared.Setting;
+            wind.ShowDialog();
+
+            XMLReader.writeXML(Shared.MyPath + "/Setting.xml", Shared.Setting, typeof(Setting));
+        }
+        /// <summary>
         /// 履歴クリアボタン
         /// </summary>
         private void Clear_Click(object sender, RoutedEventArgs e)

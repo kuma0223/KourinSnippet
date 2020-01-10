@@ -39,6 +39,7 @@
         <Button Width="25" Command="ApplicationCommands.Close">×</Button>
         <Button Width="25" Click="Reload_Click">Re</Button>
         <Button Width="25" Click="Folder_Click">Fo</Button>
+        <Button Width="25" Click="Setting_Click">Se</Button>
         <Button Width="25" Click="Clear_Click">Cl</Button>
     </StackPanel>
 </Window>
