@@ -11,6 +11,7 @@ namespace KourinSnippet
         public int PosX {get; set;}
         public int PosY {get; set;}
         public bool PopupCenter {get; set;}
+        public char PasteKey { get; set; } = 'V';
         public int Interval {get; set;}
         public SnippetSetting Snippet {get; set;}
         public HistorySetting History {get; set;}

@@ -343,7 +343,6 @@ namespace KourinSnippet
                 //COMExceptionが出てもできてる場合が多い
                 Shared.Logger.write(LogTypes.ERROR, "Clipboard.SetText異常/" + ex.ToString());
             }
-            
             //ウィンドウのフォーカスが戻るまで一応少し間を空ける
             System.Threading.Thread.Sleep(Shared.Setting.Interval);
 
@@ -360,8 +359,8 @@ namespace KourinSnippet
 
             var inputs = new List<Input>();
             inputs.Add(CreateKeyInput(0x11, 0x0 | 0x4)); //Ctrl
-            inputs.Add(CreateKeyInput(0x56, 0x0 | 0x4)); //v
-            inputs.Add(CreateKeyInput(0x56, 0x2 | 0x4));
+            inputs.Add(CreateKeyInput(Shared.Setting.PasteKey/*0x56*/, 0x0 | 0x4)); //v
+            inputs.Add(CreateKeyInput(Shared.Setting.PasteKey/*0x56*/, 0x2 | 0x4));
             inputs.Add(CreateKeyInput(0x11, 0x2 | 0x4));
 
             var ed = inputs.ToArray();
