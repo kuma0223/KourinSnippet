@@ -79,6 +79,9 @@
       <DependentUpon>Popup2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setting.cs" />
+    <Compile Include="SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Shared.cs" />
     <Compile Include="SnippetItem.cs" />
     <Compile Include="XMLReader.cs" />
@@ -103,6 +106,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Popup.xaml.cs">
@@ -123,6 +130,21 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Vanish.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

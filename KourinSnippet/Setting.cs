@@ -8,27 +8,28 @@ namespace KourinSnippet
 {
     public class Setting
     {
-        public int PosX;
-        public int PosY;
-        public bool PopupCenter;
-        public int Interval = 100;
-        public SnippetSetting Snippet;
-        public HistorySetting History;
+        public int PosX {get; set;}
+        public int PosY {get; set;}
+        public bool PopupCenter {get; set;}
+        public char PasteKey { get; set; } = 'V';
+        public int Interval {get; set;}
+        public SnippetSetting Snippet {get; set;}
+        public HistorySetting History {get; set;}
     }
 
     public class SnippetSetting
     {
         [System.Xml.Serialization.XmlAttribute]
-        public bool enable;
-        public Hotkey Hotkey;
+        public bool enable {get; set;}
+        public Hotkey Hotkey {get; set;}
     }
 
     public class HistorySetting
     {
         [System.Xml.Serialization.XmlAttribute]
-        public bool enable;
-        public Hotkey Hotkey;
-        public bool RemoveSameValue;
+        public bool enable {get; set;}
+        public Hotkey Hotkey {get; set;}
+        public bool RemoveSameValue {get; set;}
     }
 
     public class Hotkey
@@ -41,6 +42,18 @@ namespace KourinSnippet
         public bool shift { get; set; }
         [System.Xml.Serialization.XmlAttribute]
         public System.Windows.Input.Key key { get; set; }
+        
+        [System.Xml.Serialization.XmlIgnore]
+        public string keystr {
+            get { return System.Enum.GetName(typeof(System.Windows.Input.Key), key); }
+            set {
+                try {
+                    var c = value[0].ToString().ToUpper();
+                    key = (System.Windows.Input.Key)System.Enum.Parse(typeof(System.Windows.Input.Key), c);
+                } catch (Exception) {
+                }
+            }
+        }
 
         [System.Xml.Serialization.XmlIgnore]
         public HotkeySetter.MOD_KEY ModKey

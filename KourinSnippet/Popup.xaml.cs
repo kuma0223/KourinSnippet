@@ -91,6 +91,13 @@ namespace KourinSnippet
 
             setToolTip((SnippetItem)((ListBox)sender).SelectedItem);
         }
+
+        private void Item_DoubleClick(object sender, MouseButtonEventArgs e) {
+            var item = (sender as ListBoxItem).DataContext as SnippetItem;
+            if (item.Type != SnippetItem.ItemType.Directory) {
+                ClosePopup(item);
+            }
+        }
         
         private void ClosePopup(SnippetItem selected)
         {

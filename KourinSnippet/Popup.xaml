@@ -19,6 +19,14 @@
                         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
                         <Setter Property="VirtualizingPanel.IsVirtualizing" Value="False" />
                     </Style>
+                    <Style TargetType="ListBoxItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Type}" Value="Script">
+                                <Setter Property="Foreground" Value="#FFFFD5DD" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                        <EventSetter Event="MouseDoubleClick" Handler="Item_DoubleClick" />
+                    </Style>
                 </StackPanel.Resources>
                 
                 <ListBox x:Name="ItemList0" Visibility="Visible" BorderThickness="0" ItemsSource="{Binding TopItems}" KeyDown="ItemList_KeyDown" SelectionChanged="ItemList_SelectionChanged" />

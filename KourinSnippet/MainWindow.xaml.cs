@@ -98,6 +98,8 @@ namespace KourinSnippet
         
         private void Close_Executed(object sender, RoutedEventArgs e)  
         {
+            var ret = MessageBox.Show("KourinSnippetを終了します", "終了", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            if (ret != MessageBoxResult.OK) return;
             this.Close();
         }
 
@@ -206,6 +208,17 @@ namespace KourinSnippet
         private void Folder_Click(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Process.Start(Shared.MyPath+"/Items");
+        }
+        /// <summary>
+        /// 設定ボタン
+        /// </summary>
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+            var wind = new SettingWindow();
+            wind.DataContext = Shared.Setting;
+            wind.ShowDialog();
+
+            XMLReader.writeXML(Shared.MyPath + "/Setting.xml", Shared.Setting, typeof(Setting));
         }
         /// <summary>
         /// 履歴クリアボタン
@@ -332,7 +345,6 @@ namespace KourinSnippet
                 //COMExceptionが出てもできてる場合が多い
                 Shared.Logger.write(LogTypes.ERROR, "Clipboard.SetText異常/" + ex.ToString());
             }
-            
             //ウィンドウのフォーカスが戻るまで一応少し間を空ける
             System.Threading.Thread.Sleep(Shared.Setting.Interval);
 
@@ -349,8 +361,8 @@ namespace KourinSnippet
 
             var inputs = new List<Input>();
             inputs.Add(CreateKeyInput(0x11, 0x0 | 0x4)); //Ctrl
-            inputs.Add(CreateKeyInput(0x56, 0x0 | 0x4)); //v
-            inputs.Add(CreateKeyInput(0x56, 0x2 | 0x4));
+            inputs.Add(CreateKeyInput(Shared.Setting.PasteKey/*0x56*/, 0x0 | 0x4)); //v
+            inputs.Add(CreateKeyInput(Shared.Setting.PasteKey/*0x56*/, 0x2 | 0x4));
             inputs.Add(CreateKeyInput(0x11, 0x2 | 0x4));
 
             var ed = inputs.ToArray();
