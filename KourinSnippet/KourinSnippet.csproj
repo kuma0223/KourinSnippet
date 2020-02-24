@@ -131,6 +131,21 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Cross.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="image\Vanish.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -98,6 +98,8 @@ namespace KourinSnippet
         
         private void Close_Executed(object sender, RoutedEventArgs e)  
         {
+            var ret = MessageBox.Show("KourinSnippetを終了します", "終了", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            if (ret != MessageBoxResult.OK) return;
             this.Close();
         }
 
