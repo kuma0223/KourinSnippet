@@ -54,7 +54,7 @@ namespace KourinSnippet
             App.NofityIcon.Folder_Click = () => Folder_Click(null, null);
             App.NofityIcon.Setting_Click = () => Setting_Click(null, null);
             App.NofityIcon.Clear_Click = () => Clear_Click(null, null);
-            App.NofityIcon.Close_Click = () => this.Close();
+            App.NofityIcon.Close_Click = () => Close_Executed(null, null);
             App.NofityIcon.Open_Click = () => {
                 if(this.IsVisible) this.Hide();
                 else this.Show(); };
@@ -391,7 +391,7 @@ namespace KourinSnippet
                 Shared.Logger.write(LogTypes.ERROR, "実行時エラー/" + ex.ToString());
                 MessageBox.Show("実行時エラー/" + ex.GetType().Name + "/" + ex.Message);
             }
-            if(text == null) return;
+            if(text == null || text == "") return;
 
             //クリップボードに設定
             try { System.Windows.Clipboard.SetText(text); }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,13 +60,20 @@ namespace KourinSnippet
             //外部プロセスを実行します。
             kourin.setFunction(new KourinFunction("START", (args)=>{
                 if(args.Length == 0) return null;
-                var info = new System.Diagnostics.ProcessStartInfo();
-                info.FileName = args[0].ToString();
-                info.Arguments = args.Length > 1 ? args[1].ToString() : null;
-                info.UseShellExecute = true;
-                var p = System.Diagnostics.Process.Start(info);
+                var filename = args[0].ToString();
+                var argument = args.Length > 1 ? args[1].ToString() : null;
+                var waitexit = args.Length > 2 ? (bool)args[2] : false;
+                var administ = args.Length > 3 ? (bool)args[3] : false;
 
-                if (args.Length > 2 && (bool)args[2]) {
+                var info = new System.Diagnostics.ProcessStartInfo();
+                info.FileName = filename;
+                info.Arguments = argument;
+                info.UseShellExecute = true;
+                if (administ) {
+                    info.Verb = "RunAs";
+                }
+                var p = System.Diagnostics.Process.Start(info);
+                if (waitexit) {
                     p.WaitForExit();
                 }
                 return null;
