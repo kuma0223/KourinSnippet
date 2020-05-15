@@ -12,13 +12,16 @@
     
     <StackPanel x:Name="X_Root">
         
-        <StackPanel Height="80" Margin="10 5">
+        <StackPanel Margin="10 5">
             <StackPanel Orientation="Horizontal" Margin="5 2">
                 <TextBlock Text="配置" Width="80" />
                 <TextBlock Text="X" Margin="22 0 5 0" />
                 <TextBox Width="80" TextAlignment="Right" Text="{Binding PosX}" />
                 <TextBlock Text="Y" Margin="20 0 5 0" />
                 <TextBox Width="80" TextAlignment="Right" Text="{Binding PosY}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5 2">
+                <CheckBox IsChecked="{Binding Minimum}" Content="タスクバーに格納" Margin="115 0 0 0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5 2">
                 <TextBlock Text="貼り付けキー" Width="230" />
@@ -73,6 +76,6 @@
             </Border>
         </Grid>
 
-        <Label VerticalAlignment="Bottom" Background="#C44654" Foreground="White" Margin="0 10 0 0">Kourin snippet Ver 2.2</Label>
+        <Label x:Name="X_Version" VerticalAlignment="Bottom" Background="#C44654" Foreground="White" Margin="0 10 0 0">Kourin snippet</Label>
     </StackPanel>
 </Window>

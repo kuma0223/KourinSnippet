@@ -37,7 +37,8 @@
     <StackPanel Orientation="Horizontal" UseLayoutRounding="True">
         <Rectangle Width="10" MouseLeftButtonDown="Window_MouseLeftButtonDown" Fill="LightGray"></Rectangle>
         <Button Width="25" Command="ApplicationCommands.Close">
-            <Image Source="image/Cross.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" /></Button>
+            <Image Source="image/Cross.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Button>
         <Button Width="25" Click="Reload_Click">
             <Image Source="image/Refresh.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Button>

@@ -50,6 +50,14 @@ namespace KourinSnippet
         public MainWindow()
         {
             InitializeComponent();
+            App.NofityIcon.Reload_Click = () => Reload_Click(null, null);
+            App.NofityIcon.Folder_Click = () => Folder_Click(null, null);
+            App.NofityIcon.Setting_Click = () => Setting_Click(null, null);
+            App.NofityIcon.Clear_Click = () => Clear_Click(null, null);
+            App.NofityIcon.Close_Click = () => this.Close();
+            App.NofityIcon.Open_Click = () => {
+                if(this.IsVisible) this.Hide();
+                else this.Show(); };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -80,6 +88,10 @@ namespace KourinSnippet
             this.Top = Shared.Setting.PosY + (Shared.Setting.PosY<0 ? System.Windows.SystemParameters.PrimaryScreenHeight : 0);
             this.Left = Shared.Setting.PosX + (Shared.Setting.PosX<0 ? System.Windows.SystemParameters.PrimaryScreenWidth : 0);
             this.Height = 25;
+
+            if (Shared.Setting.Minimum) {
+                this.Hide();
+            }
         }
 
         private void ResetHotKey() {
@@ -118,7 +130,7 @@ namespace KourinSnippet
         
         private void Close_Executed(object sender, RoutedEventArgs e)  
         {
-            var ret = MessageBox.Show("KourinSnippetを終了します", "終了", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            var ret = MessageBox.Show("Kourin snippetを終了します", "終了", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             if (ret != MessageBoxResult.OK) return;
             this.Close();
         }
@@ -249,6 +261,13 @@ namespace KourinSnippet
         {
             ClipbordHistory.Clear();
             MessageBox.Show("クリップボード履歴をクリアしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        /// <summary>
+        /// 最小化ボタン
+        /// </summary>
+        private void Minimum_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
         }
 
         /// <summary>
