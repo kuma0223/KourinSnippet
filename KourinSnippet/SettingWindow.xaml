@@ -55,7 +55,7 @@
             </Border>
         </Grid>
 
-        <Grid Height="100" Margin="5 5">
+        <Grid Height="120" Margin="5 5">
             <Canvas>
                 <TextBlock Text="履歴" Canvas.Left="5" FontSize="20" />
                 <CheckBox Content="有効" Canvas.Left="83" Canvas.Top="3" IsChecked="{Binding History.enable}" />
@@ -64,7 +64,7 @@
             <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3" Margin="3 30 3 3">
                 <Canvas>
                     <StackPanel Orientation="Horizontal" Canvas.Top="5" Canvas.Left="5">
-                        <TextBlock Text="対応キー" Canvas.Left="5" Margin="0 0 10 0" />
+                        <TextBlock Text="対応キー" Margin="0 0 10 0" />
                         <CheckBox Content="Ctrl"  Margin="10 0" IsChecked="{Binding History.Hotkey.ctrl}" />
                         <CheckBox Content="Alt"   Margin="10 0" IsChecked="{Binding History.Hotkey.alt}" />
                         <CheckBox Content="Shift" Margin="10 0" IsChecked="{Binding History.Hotkey.shift}" />
@@ -72,6 +72,10 @@
                         <TextBox TextAlignment="Center" Width="25" MaxLength="1" Margin="10 0" Text="{Binding History.Hotkey.keystr}" />
                     </StackPanel>
                     <CheckBox Content="同じ文字列は複数保存しない" Canvas.Top="35" Canvas.Left="79" IsChecked="{Binding History.RemoveSameValue}" />
+                    <StackPanel Orientation="Horizontal" Canvas.Top="60" Canvas.Left="5">
+                        <TextBlock Text="保存件数" />
+                        <TextBox TextAlignment="Right" Width="60" MaxLength="3" Margin="10 0" Text="{Binding History.Count}" />
+                    </StackPanel>
                 </Canvas>
             </Border>
         </Grid>

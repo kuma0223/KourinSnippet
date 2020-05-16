@@ -31,6 +31,7 @@ namespace KourinSnippet
         public bool enable {get; set;}
         public Hotkey Hotkey {get; set;}
         public bool RemoveSameValue {get; set;}
+        public int Count { get; set; } = 50;
     }
 
     public class Hotkey

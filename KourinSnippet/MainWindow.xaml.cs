@@ -320,7 +320,7 @@ namespace KourinSnippet
             }
 
             this.ClipbordHistory.AddFirst(new HistoryItem(){ Text=text });
-            if(ClipbordHistory.Count > ClipHistoryNum) ClipbordHistory.RemoveLast();
+            if(ClipbordHistory.Count > Shared.Setting.History.Count) ClipbordHistory.RemoveLast();
         }
 
         /// <summary>
