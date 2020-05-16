@@ -1,6 +1,6 @@
 ﻿namespace KourinSnippet
 {
-    partial class MyNofityIcon
+    partial class MyNotifyIcon
     {
         /// <summary>
         /// 必要なデザイナー変数です。
@@ -26,9 +26,11 @@
         /// </summary>
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyNofityIcon));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MyNotifyIcon));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.Open = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.Reload = new System.Windows.Forms.ToolStripMenuItem();
             this.Folder = new System.Windows.Forms.ToolStripMenuItem();
             this.Clear = new System.Windows.Forms.ToolStripMenuItem();
@@ -36,8 +38,6 @@
             this.Setting = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.Close = new System.Windows.Forms.ToolStripMenuItem();
-            this.Open = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             // 
             // notifyIcon1
@@ -46,10 +46,12 @@
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Kourin snippet";
             this.notifyIcon1.Visible = true;
+            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
             this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // contextMenuStrip1
             // 
+            this.contextMenuStrip1.AllowMerge = false;
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Open,
             this.toolStripSeparator3,
@@ -64,6 +66,17 @@
             this.contextMenuStrip1.Size = new System.Drawing.Size(167, 154);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             this.contextMenuStrip1.Click += new System.EventHandler(this.contextMenuStrip1_Click);
+            // 
+            // Open
+            // 
+            this.Open.Name = "Open";
+            this.Open.Size = new System.Drawing.Size(166, 22);
+            this.Open.Text = "バーを表示/非表示";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(163, 6);
             // 
             // Reload
             // 
@@ -104,17 +117,6 @@
             this.Close.Name = "Close";
             this.Close.Size = new System.Drawing.Size(166, 22);
             this.Close.Text = "終了";
-            // 
-            // Open
-            // 
-            this.Open.Name = "Open";
-            this.Open.Size = new System.Drawing.Size(166, 22);
-            this.Open.Text = "バーを表示/非表示";
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(163, 6);
             this.contextMenuStrip1.ResumeLayout(false);
 
         }

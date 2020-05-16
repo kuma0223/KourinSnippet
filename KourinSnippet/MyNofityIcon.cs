@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace KourinSnippet
 {
-    public partial class MyNofityIcon : Component
+    public partial class MyNotifyIcon : Component
     {
         public Action Reload_Click;
         public Action Folder_Click;
@@ -18,7 +18,7 @@ namespace KourinSnippet
         public Action Close_Click;
         public Action Open_Click;
 
-        public MyNofityIcon() {
+        public MyNotifyIcon() {
             InitializeComponent();
 
             var ass = Assembly.GetExecutingAssembly().GetName();
@@ -26,7 +26,7 @@ namespace KourinSnippet
             notifyIcon1.Text = $"{ass.Name} {ver.Major}.{ver.Minor}";
         }
 
-        public MyNofityIcon(IContainer container) {
+        public MyNotifyIcon(IContainer container) {
             container.Add(this);
             InitializeComponent();
         }
@@ -44,6 +44,9 @@ namespace KourinSnippet
             if(e.ClickedItem == Setting) Setting_Click();
             if(e.ClickedItem == Close) Close_Click();
             if(e.ClickedItem == Open) Open_Click();
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e) {
         }
     }
 }

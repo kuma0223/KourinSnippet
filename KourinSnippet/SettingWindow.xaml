@@ -21,7 +21,7 @@
                 <TextBox Width="80" TextAlignment="Right" Text="{Binding PosY}" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5 2">
-                <CheckBox IsChecked="{Binding Minimum}" Content="タスクバーに格納" Margin="115 0 0 0" />
+                <CheckBox IsChecked="{Binding Minimum}" Content="タスクトレイに格納" Margin="115 0 0 0" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="5 2">
                 <TextBlock Text="貼り付けキー" Width="230" />

@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Runtime.InteropServices;
 using Kourin;
 using Bank;
+using System.Text.RegularExpressions;
 
 namespace KourinSnippet
 {
@@ -151,13 +152,15 @@ namespace KourinSnippet
             paths.AddRange(Directory.EnumerateDirectories(root));
             paths.AddRange(Directory.EnumerateFiles(root));
             paths.Sort();
-            foreach(var child in paths) SnippetItems.Add(CreateNode(child));
+            foreach(var child in paths){
+                SnippetItems.AddRange(CreateNode(child));
+            }
         }
 
         /// <summary>
         /// アイテムファイル読み込み
         /// </summary>
-        private SnippetItem CreateNode(string path)
+        private List<SnippetItem> CreateNode(string path)
         {
             Func<string, string> ReadText = (filePath)=>{
                 using(var reader = new StreamReader(filePath, Encoding.GetEncoding("SJIS")))
@@ -172,47 +175,79 @@ namespace KourinSnippet
                 }
             };
             //--------------------
-            var ret = new SnippetItem();
+            var ret = new List<SnippetItem>();
+
             //ディレクトリ
             if (Directory.Exists(path))
             {
-                ret.Name = Path.GetFileName(path);
-                ret.Type = SnippetItem.ItemType.Directory;
-                ret.Children = new List<SnippetItem>();
+                var itm = new SnippetItem();
+                itm.Name = Path.GetFileName(path);
+                itm.Type = SnippetItem.ItemType.Directory;
+                itm.Children = new List<SnippetItem>();
                 var paths = new List<string>();
                 paths.AddRange(Directory.EnumerateDirectories(path));
                 paths.AddRange(Directory.EnumerateFiles(path));
                 paths.Sort();
-                foreach(var child in paths) ret.Children.Add(CreateNode(child));
+                foreach(var child in paths){
+                    itm.Children.AddRange(CreateNode(child));
+                }
+                ret.Add(itm);
             }
-            //単一テキスト
+            //テキスト
             else if(Path.GetExtension(path) == ".txt")
             {
-                ret.Type = SnippetItem.ItemType.Text;
-                ret.Name = Path.GetFileNameWithoutExtension(path);
-                ret.Text = ReadText(path);
+                var txt = ReadText(path);
+                var opt = "";
+                if (txt.StartsWith("@@")) {
+                    var re = new StringReader(txt);
+                    opt = re.ReadLine().Remove(0,2);
+                    txt = re.ReadToEnd();
+                    re.Dispose();
+                }
+                if(opt == "") {
+                    //単一テキスト
+                    var itm = new SnippetItem();
+                    itm.Type = SnippetItem.ItemType.Text;
+                    itm.Name = Path.GetFileNameWithoutExtension(path);
+                    itm.Text = ReadText(path);
+                    ret.Add(itm);
+                }else if(opt == "list") {
+                    //リスト
+                    var re = new StringReader(txt);
+                    foreach(var s in Regex.Split(txt, Environment.NewLine)) {
+                        var ss = Regex.Split(s, "//");
+                        var itm = new SnippetItem();
+                        itm.Type = SnippetItem.ItemType.Text;
+                        itm.Name = ss[0].Trim();
+                        itm.Text = (ss.Length > 1 ? ss[1] : ss[0]).Trim();
+                        ret.Add(itm);
+                    }
+                }
             }
             //テキストリスト
             else if(Path.GetExtension(path) == ".list")
-            {
-                ret.Type = SnippetItem.ItemType.Directory;
-                ret.Name = Path.GetFileNameWithoutExtension(path);
-                ret.Children = new List<SnippetItem>();
+            {   //非推奨 互換用
+                var itm = new SnippetItem();
+                itm.Type = SnippetItem.ItemType.Directory;
+                itm.Name = Path.GetFileNameWithoutExtension(path);
+                itm.Children = new List<SnippetItem>();
                 foreach (var txt in ReadTexts(path))
                 {
                     var child = new SnippetItem();
                     child.Type = SnippetItem.ItemType.Text;
                     child.Name = txt;
                     child.Text = txt;
-                    ret.Children.Add(child);
+                    itm.Children.Add(child);
                 }
+                ret.Add(itm);
             }
             //スクリプト
-            else if(Path.GetExtension(path) == ".scr" || Path.GetExtension(path) == ".ks")
-            {
-                ret.Type = SnippetItem.ItemType.Script;
-                ret.Name = Path.GetFileNameWithoutExtension(path);
-                ret.Text = ReadText(path);
+            else if(Path.GetExtension(path) == ".scr" || Path.GetExtension(path) == ".ks") {
+                var itm = new SnippetItem();
+                itm.Type = SnippetItem.ItemType.Script;
+                itm.Name = Path.GetFileNameWithoutExtension(path);
+                itm.Text = ReadText(path);
+                ret.Add(itm);
             }
             return ret;
         }
