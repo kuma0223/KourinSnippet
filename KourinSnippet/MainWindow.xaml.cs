@@ -89,6 +89,9 @@ namespace KourinSnippet
             this.Top = Shared.Setting.PosY + (Shared.Setting.PosY<0 ? System.Windows.SystemParameters.PrimaryScreenHeight : 0);
             this.Left = Shared.Setting.PosX + (Shared.Setting.PosX<0 ? System.Windows.SystemParameters.PrimaryScreenWidth : 0);
             this.Height = 25;
+#if DEBUG
+            this.Height = 50;
+#endif
 
             if (Shared.Setting.Minimum) {
                 this.Hide();
@@ -303,6 +306,16 @@ namespace KourinSnippet
         private void Minimum_Click(object sender, RoutedEventArgs e)
         {
             this.Hide();
+        }
+        /// <summary>
+        /// 管理用 関数一覧
+        /// </summary>
+        private void Functions_Click(object sender, RoutedEventArgs e) {
+            using(var writer = new StreamWriter(Shared.MyPath + "/functions.txt")) {
+                foreach(var fname in kourin.functions) {
+                    writer.WriteLine(fname);
+                }   
+            }
         }
 
         /// <summary>

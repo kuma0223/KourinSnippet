@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# スクリプト基本仕様
+
+定型文機能でのスクリプトの記述には .Netアプリ組み込み用スクリプト Kourin を利用します。
+実行エンジンには標準関数の他にいくつかアプリケーション独自の関数が登録されています。
+
+Version：Kourin 5.0  
+Plugin：-
+
+## 書き方・文法
+
+[Kourin の GitHub Wiki](https://github.com/kuma0223/Kourin/wiki)
+ を参照してください。
+
+## アプリケーションにおける動作
+
+定型文機能でスクリプト項目を選択すると、そのスクリプトファイルが実行されます。
+スクリプトの実行結果がnullでない場合、その値がクリップボードに登録され貼り付け操作が行われます。
+
+例）「1470」が張り付けられます
+```
+1450 + 20
+```
+
+### ECHOとPRINT
+
+ECHO関数にfalseを指定するとそのスクリプトでは実行結果を出力しません。
+またPRINT関数に文字列を渡すことで、任意の文字を出力することができます。
+
+例）「Hello(改行)World」が貼り付けられます
+```
+ECHO[FALSE]
+
+PRINT["Hello"]
+PRINT["World"]
+
+1450 + 20 //出力されない
+```
+
+### クリップボードの内容を取得
+
+CLIPBOARD関数で直前にコピーまたは切り取った文字列を取得することができます。
+
+例）名前をコピーしてから実行します
+```
+"私の名前は" & CLIPBOARD & "です。"
+```
+
+### 外部プロセス実行
+
+START関数で外部プロセスを実行することができます。
+START関数のパラメータについてはアプリ関数一覧を参照してください。
+
+例）メモ帳を開きます
+```
+START["notepad.exe"]
+```
+
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

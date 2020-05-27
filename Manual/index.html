@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>Kourin Snippet - Manual</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<style>
+    html{
+        height: 100%;
+    }
+    body{
+        display : flex;
+        min-height: 100%;
+    }
+    nav{
+        width: 200px;
+        min-height: 100%;
+        background: #4c6473;
+        color: white;
+    }
+    nav a{
+        color: white;
+    }
+    iframe{
+        border: none;
+        flex-grow: 1;
+    }
+    ol, ul{
+        margin-right: 0;
+    }
+    li{
+        margin-top: 5px;
+    }
+    h3{
+        border: none;
+        font-size: 1em;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <nav>
+        <h3>アプリについて</h3>
+        <ul>
+            <li><a href="pages/start.html" target="frame">使い方</a></li>
+            <li><a href="pages/history.html" target="frame">履歴機能</a></li>
+            <li><a href="pages/snippet.html" target="frame">定型文機能</a></li>
+            <li><a href="pages/setting.html" target="frame">動作設定</a></li>
+        </ul>
+        <h3>スクリプト</h3>
+        <ul>
+            <li><a href="pages/kourin.html" target="frame">基本仕様</a></li>
+            <li><a href="pages/funcs_kourin.html" target="frame">標準関数一覧</a></li>
+            <li><a href="pages/funcs_app.html" target="frame">アプリ関数一覧</a></li>
+            <li><a href="pages/sample.html" target="frame">サンプル</a></li>
+            <li><a href="pages/plulgin.html" target="frame">プラグイン開発</a></li>
+        </ul>
+        <hr>
+        <ul>
+            <li>
+                <a href="pages/index.html" target="frame">制作情報</a>
+            </li>
+        </ul>
+    </nav>
+
+    <iframe name="frame" src="pages/index.html">
+    </iframe>
+</body>
+</html>

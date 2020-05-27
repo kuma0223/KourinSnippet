@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# 基本的な使い方
+
+## 起動と終了
+
+KourinSnippet.exeを実行してください。
+アプリケーションは起動するとタスクトレイへ常駐します。
+
+![タスクトレイ](tasktray.png)
+
+アイコンを右クリックするとメニューが表示されます。
+
+![タスクメニュー](taskmenu.png)
+
+タスクトレイをダブルクリックするとバーウィンドウが表示されます。
+
+![バーウィンドウ](barwindow.png)
+
+メニューの終了またはバーの×ボタンを押すとアプリケーションを終了します。
+
+### 自動起動
+
+システムの立ち上げ時にアプリを起動するには、自身でスタートアップにKourinSnippet.exeのショートカットを登録してください。
+
+## 機能の呼び出し
+
+キーボードのショートカットキー操作で履歴および定型文のリストを呼び出します。
+初期状態では履歴が(Ctrl + Shift + V)、定型文が(Ctrl + Alt + V)に登録されています。
+
+![履歴](history.png)
+
+項目をEnterキーまたはダブルクリックで選択すると、元のウィンドウに対して貼り付けのショートカットキー(Ctrl + V)を送ります。
+
+表示および貼り付けのキーは設定から変更することができます。
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>
