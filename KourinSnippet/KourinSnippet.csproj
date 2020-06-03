@@ -75,6 +75,9 @@
     </ApplicationDefinition>
     <Compile Include="ClipboardChecker.cs" />
     <Compile Include="HistoryItem.cs" />
+    <Compile Include="InputDialog.xaml.cs">
+      <DependentUpon>InputDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LogFileWriter.cs" />
     <Compile Include="MyKourin.cs" />
     <Compile Include="MyNofityIcon.cs">
@@ -94,6 +97,10 @@
     <Compile Include="Shared.cs" />
     <Compile Include="SnippetItem.cs" />
     <Compile Include="XMLReader.cs" />
+    <Page Include="InputDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

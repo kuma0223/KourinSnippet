@@ -218,6 +218,7 @@ namespace KourinSnippet
                     //リスト
                     var re = new StringReader(txt);
                     foreach(var s in Regex.Split(txt, Environment.NewLine)) {
+                        if(s.Trim()=="") continue;
                         var ss = Regex.Split(s, "//");
                         var itm = new SnippetItem();
                         itm.Type = SnippetItem.ItemType.Text;
@@ -449,7 +450,10 @@ namespace KourinSnippet
             }
 
             //ウィンドウのフォーカスが戻るまで一応少し間を空ける
-            if(FocusHandle != IntPtr.Zero) SetActiveWindow(FocusHandle);
+            if(FocusHandle != IntPtr.Zero){
+                SetActiveWindow(FocusHandle);
+                SetFocus(FocusHandle);
+            }
             System.Threading.Thread.Sleep(Shared.Setting.Interval);
 
             //貼り付け

@@ -1,0 +1,24 @@
+﻿<Window x:Class="KourinSnippet.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KourinSnippet"
+        mc:Ignorable="d" FontSize="14" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
+        Title="InputDialog" Height="240" Width="300" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <StackPanel Margin="10" VerticalAlignment="Center">
+            <TextBlock x:Name="X_Label1" Text="label" />
+            <TextBox x:Name="X_Box1" />
+            <TextBlock x:Name="X_Label2" Text="label" Margin="0 10 0 0" />
+            <TextBox x:Name="X_Box2" />
+            <TextBlock x:Name="X_Label3" Text="label" Margin="0 10 0 0" />
+            <TextBox x:Name="X_Box3" />
+        </StackPanel>
+        <Button Content="OK" Grid.Row="1" Width="100" VerticalAlignment="Center" Click="Button_Click" />
+    </Grid>
+</Window>

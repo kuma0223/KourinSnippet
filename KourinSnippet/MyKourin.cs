@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Kourin;
@@ -79,6 +80,23 @@ namespace KourinSnippet
                 return null;
             }));
             
+            //入力ダイアログを表示します。
+            kourin.setFunction(new KourinFunction("InputDialog", (args) => {
+                if(args.Length == 0) return null;
+                var wind = new InputDialog();
+                wind.Label1 = args.Length > 0 ? args[0].ToString() : null;
+                wind.Label2 = args.Length > 1 ? args[1].ToString() : null;
+                wind.Label3 = args.Length > 2 ? args[2].ToString() : null;
+
+                var ret = wind.ShowDialog();
+
+                kourin.variables["Input1"] = wind.Text1;
+                kourin.variables["Input2"] = wind.Text2;
+                kourin.variables["Input3"] = wind.Text3;
+
+                return ret.Value;
+            }));
+
             //コレクションのインデクス位置のデータを返します。
             kourin.setFunction(new KourinFunction("ElementAt", (args)=>{
                 return (args[0] as IEnumerable<object>).ElementAt<object>((int)args[1]);

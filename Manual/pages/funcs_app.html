@@ -14,7 +14,7 @@
 ## 制御系
 
 ### ECHO
-- args0 true:ON / false:OFF
+- args0 true/false
 
 falseを指定すると、そのスクリプトの実行結果は貼り付けを行いません。
 スクリプトの開始時はtrueに設定されています。
@@ -27,6 +27,14 @@ falseを指定すると、そのスクリプトの実行結果は貼り付けを
 ### CLIPBOARD
 
 現在クリップボードにある文字列を返します。
+
+### INPUTDIALOG
+- args0 入力欄1のラベル
+- args1 入力欄2のラベル
+- args2 入力欄3のラベル
+
+ダイアログを表示してユーザーの入力を待ちます。
+入力された文字はグローバル変数の$$Input1～$$Input3に格納されます。
 
 ### START
 - args0 プログラム名
@@ -53,10 +61,10 @@ UACが有効な場合は管理者昇格のダイアログが表示されます�
 文字列を正規表現で分割します。戻り値は文字列の配列です。
 
 ```
-$spl = Split["山田 太郎", "\\\\s"];
+$spl = "リンゴ, バナナ, メロン":Split["[ ,]+"];
 
-$spl:ElementAt[0]:Print //山田
-$spl:ElementAt[1]:Print //太郎
+$spl:ElementAt[0]:Print //リンゴ
+$spl:ElementAt[1]:Print //バナナ
 ```
 
 ### REPLACE
