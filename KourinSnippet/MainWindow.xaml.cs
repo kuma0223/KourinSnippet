@@ -250,7 +250,7 @@ namespace KourinSnippet
                 var itm = new SnippetItem();
                 itm.Type = SnippetItem.ItemType.Script;
                 itm.Name = Path.GetFileNameWithoutExtension(path);
-                itm.Text = ReadText(path);
+                itm.Text = ReadText(path).Trim();
                 ret.Add(itm);
             }
             return ret;
