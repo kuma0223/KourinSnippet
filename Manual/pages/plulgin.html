@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# プラグイン開発
+
+Kourin の関数プラグイン機能を利用して、独自に .Net Framework で作成したプラグインを登録できます。
+登録されたプラグイン関数は定型文機能のスクリプトで呼び出すことができます。
+
+## プラグインの作成
+
+[Kourin の GitHub Wiki](https://github.com/kuma0223/Kourin/wiki)
+を参照してください。
+
+## アプリへの登録方法
+
+作成したプラグインのDLLファイルをアプリケーションフォルダのPluginフォルダに配置してください。
+DLLはアプリケーションの起動時に読み込まれ、スクリプトエンジンに登録されます。
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

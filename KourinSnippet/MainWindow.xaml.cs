@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Runtime.InteropServices;
 using Kourin;
 using Bank;
+using System.Text.RegularExpressions;
 
 namespace KourinSnippet
 {
@@ -33,6 +34,8 @@ namespace KourinSnippet
         private HotkeySetter HKSetter = new HotkeySetter();
         private ClipboardChecker CBChecker = new ClipboardChecker();
         
+        private IntPtr FocusHandle = IntPtr.Zero;
+
         /// <summary>
         /// スニペット要素コレクション
         /// </summary>
@@ -48,12 +51,19 @@ namespace KourinSnippet
         public MainWindow()
         {
             InitializeComponent();
+            App.NofityIcon.Reload_Click = () => Reload_Click(null, null);
+            App.NofityIcon.Folder_Click = () => Folder_Click(null, null);
+            App.NofityIcon.Setting_Click = () => Setting_Click(null, null);
+            App.NofityIcon.Clear_Click = () => Clear_Click(null, null);
+            App.NofityIcon.Close_Click = () => Close_Executed(null, null);
+            App.NofityIcon.Open_Click = () => {
+                if(this.IsVisible) this.Hide();
+                else this.Show(); };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Shared.MyPath = System.IO.Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]);
-            var handle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
 
             //設定読み込み
             Shared.Setting = (Setting)Bank.XMLReader.readXML(Shared.MyPath + "/Setting.xml", typeof(Setting));
@@ -70,23 +80,49 @@ namespace KourinSnippet
 
             //エンジン初期化
             kourin = MyKourin.CreateEngine();
-            
-            //ホットキー設定
-            HKSetter.HotKeyPressed += HotKeyPressed;
-            if(Shared.Setting.Snippet.enable) //スニペット用
-                HKSetter.SetHotKey(handle, HotkeyId1, Shared.Setting.Snippet.Hotkey.ModKey, Shared.Setting.Snippet.Hotkey.key);
-            if(Shared.Setting.History.enable) //履歴用
-                HKSetter.SetHotKey(handle, HotkeyId2, Shared.Setting.History.Hotkey.ModKey, Shared.Setting.History.Hotkey.key);
 
-            //クリップボード監視設定
-            if (Shared.Setting.History.enable) { 
-                CBChecker.ClipbordAppended += ClipbordAppended; 
-                CBChecker.SetViewer(handle);
-            }
-            
+            //ホットキー/クリップボード設定            
+            HKSetter.HotKeyPressed += HotKeyPressed;
+            CBChecker.ClipbordAppended += ClipbordAppended;
+            ResetHotKey();
+
             this.Top = Shared.Setting.PosY + (Shared.Setting.PosY<0 ? System.Windows.SystemParameters.PrimaryScreenHeight : 0);
             this.Left = Shared.Setting.PosX + (Shared.Setting.PosX<0 ? System.Windows.SystemParameters.PrimaryScreenWidth : 0);
             this.Height = 25;
+#if DEBUG
+            this.Height = 50;
+#endif
+
+            if (Shared.Setting.Minimum) {
+                this.Hide();
+            }
+        }
+
+        private void ResetHotKey() {
+            var handle = new System.Windows.Interop.WindowInteropHelper(this).Handle;
+            
+            //一度全部削除
+            CBChecker.RemoveViewer();
+            HKSetter.RemoveHotKey(HotkeyId1);
+            HKSetter.RemoveHotKey(HotkeyId2);
+
+            //スニペット用
+            if (Shared.Setting.Snippet.enable) { 
+                HKSetter.SetHotKey(handle, HotkeyId1,
+                    Shared.Setting.Snippet.Hotkey.ModKey,
+                    Shared.Setting.Snippet.Hotkey.key);
+            }
+            //履歴用
+            if (Shared.Setting.History.enable) {                
+                HKSetter.SetHotKey(handle, HotkeyId2, 
+                    Shared.Setting.History.Hotkey.ModKey,
+                    Shared.Setting.History.Hotkey.key);
+            }
+
+            //クリップボード監視設定
+            if (Shared.Setting.History.enable) { 
+                CBChecker.SetViewer(handle);
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -98,7 +134,7 @@ namespace KourinSnippet
         
         private void Close_Executed(object sender, RoutedEventArgs e)  
         {
-            var ret = MessageBox.Show("KourinSnippetを終了します", "終了", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            var ret = MessageBox.Show("Kourin snippetを終了します", "終了", MessageBoxButton.OKCancel, MessageBoxImage.Information);
             if (ret != MessageBoxResult.OK) return;
             this.Close();
         }
@@ -119,13 +155,15 @@ namespace KourinSnippet
             paths.AddRange(Directory.EnumerateDirectories(root));
             paths.AddRange(Directory.EnumerateFiles(root));
             paths.Sort();
-            foreach(var child in paths) SnippetItems.Add(CreateNode(child));
+            foreach(var child in paths){
+                SnippetItems.AddRange(CreateNode(child));
+            }
         }
 
         /// <summary>
         /// アイテムファイル読み込み
         /// </summary>
-        private SnippetItem CreateNode(string path)
+        private List<SnippetItem> CreateNode(string path)
         {
             Func<string, string> ReadText = (filePath)=>{
                 using(var reader = new StreamReader(filePath, Encoding.GetEncoding("SJIS")))
@@ -140,47 +178,80 @@ namespace KourinSnippet
                 }
             };
             //--------------------
-            var ret = new SnippetItem();
+            var ret = new List<SnippetItem>();
+
             //ディレクトリ
             if (Directory.Exists(path))
             {
-                ret.Name = Path.GetFileName(path);
-                ret.Type = SnippetItem.ItemType.Directory;
-                ret.Children = new List<SnippetItem>();
+                var itm = new SnippetItem();
+                itm.Name = Path.GetFileName(path);
+                itm.Type = SnippetItem.ItemType.Directory;
+                itm.Children = new List<SnippetItem>();
                 var paths = new List<string>();
                 paths.AddRange(Directory.EnumerateDirectories(path));
                 paths.AddRange(Directory.EnumerateFiles(path));
                 paths.Sort();
-                foreach(var child in paths) ret.Children.Add(CreateNode(child));
+                foreach(var child in paths){
+                    itm.Children.AddRange(CreateNode(child));
+                }
+                ret.Add(itm);
             }
-            //単一テキスト
+            //テキスト
             else if(Path.GetExtension(path) == ".txt")
             {
-                ret.Type = SnippetItem.ItemType.Text;
-                ret.Name = Path.GetFileNameWithoutExtension(path);
-                ret.Text = ReadText(path);
+                var txt = ReadText(path);
+                var opt = "";
+                if (txt.StartsWith("@@")) {
+                    var re = new StringReader(txt);
+                    opt = re.ReadLine().Remove(0,2);
+                    txt = re.ReadToEnd();
+                    re.Dispose();
+                }
+                if(opt == "") {
+                    //単一テキスト
+                    var itm = new SnippetItem();
+                    itm.Type = SnippetItem.ItemType.Text;
+                    itm.Name = Path.GetFileNameWithoutExtension(path);
+                    itm.Text = ReadText(path);
+                    ret.Add(itm);
+                }else if(opt == "list") {
+                    //リスト
+                    var re = new StringReader(txt);
+                    foreach(var s in Regex.Split(txt, Environment.NewLine)) {
+                        if(s.Trim()=="") continue;
+                        var ss = Regex.Split(s, "//");
+                        var itm = new SnippetItem();
+                        itm.Type = SnippetItem.ItemType.Text;
+                        itm.Name = ss[0].Trim();
+                        itm.Text = (ss.Length > 1 ? ss[1] : ss[0]).Trim();
+                        ret.Add(itm);
+                    }
+                }
             }
             //テキストリスト
             else if(Path.GetExtension(path) == ".list")
-            {
-                ret.Type = SnippetItem.ItemType.Directory;
-                ret.Name = Path.GetFileNameWithoutExtension(path);
-                ret.Children = new List<SnippetItem>();
+            {   //非推奨 互換用
+                var itm = new SnippetItem();
+                itm.Type = SnippetItem.ItemType.Directory;
+                itm.Name = Path.GetFileNameWithoutExtension(path);
+                itm.Children = new List<SnippetItem>();
                 foreach (var txt in ReadTexts(path))
                 {
                     var child = new SnippetItem();
                     child.Type = SnippetItem.ItemType.Text;
                     child.Name = txt;
                     child.Text = txt;
-                    ret.Children.Add(child);
+                    itm.Children.Add(child);
                 }
+                ret.Add(itm);
             }
             //スクリプト
-            else if(Path.GetExtension(path) == ".scr" || Path.GetExtension(path) == ".ks")
-            {
-                ret.Type = SnippetItem.ItemType.Script;
-                ret.Name = Path.GetFileNameWithoutExtension(path);
-                ret.Text = ReadText(path);
+            else if(Path.GetExtension(path) == ".scr" || Path.GetExtension(path) == ".ks") {
+                var itm = new SnippetItem();
+                itm.Type = SnippetItem.ItemType.Script;
+                itm.Name = Path.GetFileNameWithoutExtension(path);
+                itm.Text = ReadText(path).Trim();
+                ret.Add(itm);
             }
             return ret;
         }
@@ -217,7 +288,9 @@ namespace KourinSnippet
             var wind = new SettingWindow();
             wind.DataContext = Shared.Setting;
             wind.ShowDialog();
-
+            //ホットキー再設定
+            ResetHotKey();
+            //ファイル保存
             XMLReader.writeXML(Shared.MyPath + "/Setting.xml", Shared.Setting, typeof(Setting));
         }
         /// <summary>
@@ -227,6 +300,23 @@ namespace KourinSnippet
         {
             ClipbordHistory.Clear();
             MessageBox.Show("クリップボード履歴をクリアしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        /// <summary>
+        /// 最小化ボタン
+        /// </summary>
+        private void Minimum_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+        }
+        /// <summary>
+        /// 管理用 関数一覧
+        /// </summary>
+        private void Functions_Click(object sender, RoutedEventArgs e) {
+            using(var writer = new StreamWriter(Shared.MyPath + "/functions.txt")) {
+                foreach(var fname in kourin.functions) {
+                    writer.WriteLine(fname);
+                }   
+            }
         }
 
         /// <summary>
@@ -244,7 +334,7 @@ namespace KourinSnippet
             }
 
             this.ClipbordHistory.AddFirst(new HistoryItem(){ Text=text });
-            if(ClipbordHistory.Count > ClipHistoryNum) ClipbordHistory.RemoveLast();
+            if(ClipbordHistory.Count > Shared.Setting.History.Count) ClipbordHistory.RemoveLast();
         }
 
         /// <summary>
@@ -283,35 +373,48 @@ namespace KourinSnippet
                 frm.Focus();
             }
         }
-
+        
         /// <summary>
-        /// キャレットの位置取得
+        /// キャレットの絶対位置取得
         /// </summary>
-        private WPOINT GetCuretPosition()
-        {
-            var point = new WPOINT();
-
-            var cthred = GetCurrentThreadId();
-            var awnd = GetForegroundWindow();
-            var prc = GetWindowThreadProcessId(awnd, IntPtr.Zero);
+        private WPOINT GetCuretPosition() {
+            //フォーカスのあるハンドルを取っておく
+            FocusHandle = GetFocus();
             
-            AttachThreadInput(cthred, prc, true);
-            var isOk = (!Shared.Setting.PopupCenter) ? GetCaretPos(ref point) : false;
-            //var focusWHnd = GetFocus(); //フォーカスのあるハンドルを取っておく
-            AttachThreadInput(cthred, prc, false);
-
+            //ウィンドウのサイズ
+            var awnd = GetForegroundWindow();
             var rect = new WRECT();
             GetWindowRect(awnd, ref rect);
-
-            //変わらず。これで取れる奴はGetCaretPosでも取れる。
-            //var tinfo = new GUIThreadInfo();
-            //tinfo.cbSize = Marshal.SizeOf(tinfo);
-            //GetGUIThreadInfo(0, ref tinfo);
             
-            if(isOk && point.x!=0 && point.y!=0) //キャレット位置が取れればその位置
-                return new WPOINT(){ x=rect.l+point.x, y=rect.t+point.y};
-            else //取れなければ適当な位置
-                return new WPOINT(){ x=rect.l + (rect.r-rect.l)/2 -100, y=rect.t + (rect.b-rect.t)/2 -175 };
+            //キャレット位置
+            var point = new WPOINT();
+            var ok = false;
+
+            if (!Shared.Setting.PopupCenter) {
+                var cthred = GetCurrentThreadId();
+                var prc = GetWindowThreadProcessId(awnd, IntPtr.Zero);
+            
+                AttachThreadInput(cthred, prc, true);
+                ok = GetCaretPos(ref point);
+                AttachThreadInput(cthred, prc, false);
+
+                //変わらず。これで取れる奴はGetCaretPosでも取れる。
+                //var tinfo = new GUIThreadInfo();
+                //tinfo.cbSize = Marshal.SizeOf(tinfo);
+                //GetGUIThreadInfo(0, ref tinfo);
+            }
+            
+            if(ok) {
+                //キャレット位置が取れればその位置
+                return new WPOINT() {
+                    x = rect.l + point.x,
+                    y = rect.t + point.y };
+            } else {
+                //取れなければウィンドウの中央
+                return new WPOINT() {
+                    x = rect.l + (rect.r - rect.l) / 2 - 100,
+                    y = rect.t + (rect.b - rect.t) / 2 - 175 };
+            }
         }
         
         /// <summary>
@@ -337,7 +440,7 @@ namespace KourinSnippet
                 Shared.Logger.write(LogTypes.ERROR, "実行時エラー/" + ex.ToString());
                 MessageBox.Show("実行時エラー/" + ex.GetType().Name + "/" + ex.Message);
             }
-            if(text == null) return;
+            if(text == null || text == "") return;
 
             //クリップボードに設定
             try { System.Windows.Clipboard.SetText(text); }
@@ -345,15 +448,21 @@ namespace KourinSnippet
                 //COMExceptionが出てもできてる場合が多い
                 Shared.Logger.write(LogTypes.ERROR, "Clipboard.SetText異常/" + ex.ToString());
             }
+
             //ウィンドウのフォーカスが戻るまで一応少し間を空ける
+            if(FocusHandle != IntPtr.Zero){
+                SetActiveWindow(FocusHandle);
+                SetFocus(FocusHandle);
+            }
             System.Threading.Thread.Sleep(Shared.Setting.Interval);
 
             //貼り付け
+            //(Ctrl+v)
             Func<int, int, Input> CreateKeyInput = (vkey, flag)=>{
                 var input = new Input();
                 input.dwType = 1;
                 input.ki = new KeyboardInput();
-                input.ki.wVk = (short)vkey;
+                input.ki.wVk = (short)(('a' <= vkey && vkey <= 'x') ? (vkey - 'a' + 'A') : vkey);
                 input.ki.wScan = (short)MapVirtualKey(input.ki.wVk, 0);
                 input.ki.dwFlags =flag;
                 return input;
@@ -367,7 +476,9 @@ namespace KourinSnippet
 
             var ed = inputs.ToArray();
             SendInput(ed.Length, ed, Marshal.SizeOf(ed[0]));
-
+            
+            //貼り付け
+            //(WindowMessage)
             //駄目。秀丸やメモ帳はできるが
             //ChromeやVisualStudioは受け付けない。
             //SendMessage(focusWHnd, WM_PASTE, 0, 0);

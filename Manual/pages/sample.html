@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# スクリプトのサンプル
+スクリプトの例をいくつか載せます。
+
+## 文章を作る
+事前に用意した文章の一部分を任意の文字や今日の日付で置き換えます。
+
+```
+InputDialog["名前", "登録日", "期限"]
+
+$name = $$Input1
+$day1 = $$Input2
+$day2 = $$Input3
+
+$str = ""
+$str = $str & $name & "様、いつもご利用いただきありがとうございます。\n"
+$str = $str & "ご登録日の" & $day1 & "より1カ月が経過いたしましたので、アンケートのご協力をお願いします。\n"
+$str = $str & "ご回答いただける場合は" & $day2 & "までに返信していただけると幸いです。\n"
+$str = $str & "よろしくお願いいたします。\n\n"
+$str = $str & format["{0:yyyy年MM月dd日}", date] & " サービス改善担当"
+$str
+```
+
+## いろいろな処理
+
+### 消費税を計算する
+コピーした文字を数値として計算します。
+
+```
+//消費税（8%）込みの値段を計算する
+$val = Clipboard:Int
+$val = $val * 1.08
+Int[$val]
+```
+
+### 西暦を和暦に変換する
+コピーした日付を判別して和暦表記に変換して貼り付けます。
+
+```
+//コピーした日付を和暦に変換する
+//入力例：2020/5/1
+
+$time = Format["{0:yyyyMMdd}", Date[Clipboard]]
+$y = $time:Substring[0,4]:int
+$m = $time:Substring[4,2]:int
+$d = $time:Substring[6,2]:int
+$t = $time:int
+
+$nengo = "西暦"
+$nen = $y
+
+IF[$t >= 19120730, {
+    $nengo = "大正"
+    $nen =  ($y - 1912 + 1)
+}]
+IF[$t >= 19261225,{
+    $nengo = "昭和"
+    $nen =  ($y - 1926 + 1)
+}]
+IF[$t >= 19890108,{
+    $nengo = "平成"
+    $nen =  ($y - 1989 + 1)
+}]
+IF[$t >= 20190501,{
+    $nengo = "令和"
+    $nen =  ($y - 2019 + 1)
+}]
+
+$nengo & $nen & "年" & $m & "月" & $d & "日"
+```
+
+### 連番を作る
+ループを使って連続した数字を作成します。
+
+```
+//連続した数値を貼り付ける
+InputDialog["最初の数値", "最後の数値", "0埋め桁数"]
+
+$fmt = if[$$Input3 == "", "{0}", "{0:D" & $$Input3 & "}"]
+
+$i = $$Input1:Int
+Repeat[$$Input2:Int - $$Input1:Int + 1,{
+	Format[$fmt, $i] : PRINT
+	$i=$i+1
+}]
+```
+
+## 外部プロセス実行の活用
+
+### アプリを起動する
+START関数でアプリを記述することで、ランチャーのように利用できます。
+
+```
+//メモ帳とペイントを開く
+START["notepad"]
+START["mspaint"]
+```
+
+### Google検索を行う
+ブラウザを起動してGoogleの検索結果を開きます。
+
+```
+InputDialog["検索ワード"]
+START["https://google.co.jp/search?q=" & $$Input1]
+```
+
+Google以外にもURLでパラメータを送るWebサービスであれば同様です。
+
+```
+//コピーした単語を英次郎 on the Webで表示
+START["https://eow.alc.co.jp/search?q=" & Clipboard]
+```
+
+### IPアドレスを変更する
+第四引数をtrueにすると管理者モードでコマンドを実行することができます。
+
+```
+//静的IPアドレスに設定する
+$name   = "\"イーサネット\""
+$ip     = "192.168.1.100"
+$subnet = "255.255.255.0"
+$gate   = "192.168.1.254"
+$dns    = "192.168.10.254"
+
+$cmd = "netsh interface ipv4 set address " & $name & " static " & $ip & " " & $subnet & " " & $gate
+$cmd = $cmd & "& netsh interface ipv4 add dns " & $name & " " & $dns
+$cmd = $cmd & "& pause"
+
+START["cmd", "/C " & $cmd, false, true]
+```
+
+```
+//DHCPに設定する
+$name = "\"イーサネット\""
+
+$cmd = "netsh interface ipv4 set address name=" & $name & " source=dhcp"
+$cmd = $cmd & "& netsh interface ipv4 set dns " & $name & " dhcp"
+$cmd = $cmd & "& timeout 5"
+
+START["cmd", "/C " & $cmd, false, true]
+```
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

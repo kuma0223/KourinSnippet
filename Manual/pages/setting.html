@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# 動作設定
+
+タスクトレイメニューから動作設定画面を開けます。
+設定は動作設定画面を閉じるとすぐに反映されます。
+
+![設定](setting.png)
+
+## 設定項目
+
+### 共通設定
+
+・配置  
+バーウィンドウの初期位置です。負の値を設定すると右下からの位置になります。
+
+・タスクトレイに格納  
+バーウィンドウを表示した状態で起動する場合はチェックを外します。
+
+・貼り付けキー  
+定型文・履歴の貼り付け操作に用いるショートカットキーです。
+Windowsのデフォルトからカスタマイズしている場合に変更します。
+
+・貼り付け操作までの待機時間  
+定型文・履歴の選択後に貼り付け操作を行うまでのラグです。
+貼り付けがうまくいかない場合は長くしてみてください。
+
+### 定型文設定
+
+・有効  
+定型文の機能を無効にしたいときチェックを外します。
+
+・対応キー  
+定型文リストを表示するショートカットキーです。
+
+### 履歴設定
+
+・有効  
+履歴の機能を無効にしたいときチェックを外します。
+
+・対応キー  
+履歴を表示するショートカットキーです。
+
+・同じ文字列は複数保存しない  
+チェックを外すと同じ文字を連続でコピー/切り取りしたときに同じ文字が複数履歴に残ります。
+
+・保存件数
+履歴の保存件数です。
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

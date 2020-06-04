@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KourinSnippet.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="KourinSnippet" Width="150"  Height="25" Loaded="Window_Loaded" Closed="Window_Closed" WindowStyle="None" ResizeMode="NoResize" Background="LightGray" ShowInTaskbar="False">
+        Title="KourinSnippet" Width="150"  Height="50" Loaded="Window_Loaded" Closed="Window_Closed" WindowStyle="None" ResizeMode="NoResize" Background="LightGray" ShowInTaskbar="False">
     <Window.CommandBindings>
         <CommandBinding Command="ApplicationCommands.Close" Executed="Close_Executed" />
     </Window.CommandBindings>
@@ -34,21 +34,29 @@
         </Style>
     </Window.Resources>
 
-    <StackPanel Orientation="Horizontal" UseLayoutRounding="True">
-        <Rectangle Width="10" MouseLeftButtonDown="Window_MouseLeftButtonDown" Fill="LightGray"></Rectangle>
-        <Button Width="25" Command="ApplicationCommands.Close">
-            <Image Source="image/Cross.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" /></Button>
-        <Button Width="25" Click="Reload_Click">
-            <Image Source="image/Refresh.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Button>
-        <Button Width="25" Click="Folder_Click">
-            <Image Source="image/Folder.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Button>
-        <Button Width="25" Click="Setting_Click">
-            <Image Source="image/Cog.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Button>
-        <Button Width="25" Click="Clear_Click">
-            <Image Source="image/Vanish.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
-        </Button>
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" UseLayoutRounding="True" Height="25">
+            <Rectangle Width="10" MouseLeftButtonDown="Window_MouseLeftButtonDown" Fill="LightGray"></Rectangle>
+            <Button Width="25" Command="ApplicationCommands.Close">
+                <Image Source="image/Cross.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+            <Button Width="25" Click="Reload_Click">
+                <Image Source="image/Refresh.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+            <Button Width="25" Click="Folder_Click">
+                <Image Source="image/Folder.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+            <Button Width="25" Click="Setting_Click">
+                <Image Source="image/Cog.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+            <Button Width="25" Click="Clear_Click">
+                <Image Source="image/Vanish.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            </Button>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" UseLayoutRounding="True" Height="25">
+            <Rectangle Width="10" MouseLeftButtonDown="Window_MouseLeftButtonDown" Fill="LightGray"></Rectangle>
+            <Button Width="25" Click="Functions_Click" Content="Fu" />
+        </StackPanel>
     </StackPanel>
 </Window>

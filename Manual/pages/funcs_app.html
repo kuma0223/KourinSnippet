@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# アプリケーション関数一覧
+
+アプリケーションで追加された関数です。
+
+## 制御系
+
+### ECHO
+- args0 true/false
+
+falseを指定すると、そのスクリプトの実行結果は貼り付けを行いません。
+スクリプトの開始時はtrueに設定されています。
+
+### PRINT
+- args0 出力文字列
+
+貼り付けされる出力文字列に1行追加します。
+
+### CLIPBOARD
+
+現在クリップボードにある文字列を返します。
+
+### INPUTDIALOG
+- args0 入力欄1のラベル
+- args1 入力欄2のラベル
+- args2 入力欄3のラベル
+
+ダイアログを表示してユーザーの入力を待ちます。
+入力された文字はグローバル変数の$$Input1～$$Input3に格納されます。
+
+### START
+- args0 プログラム名
+- args1 コマンドライン引数
+- args2 true:プログラムの終了を待つ
+- args3 true:管理者モードで実行
+
+外部プログラムを実行します。第二引数以降は省略が可能です。
+
+第四引数をtrueにした場合は管理者への昇格を行います。
+UACが有効な場合は管理者昇格のダイアログが表示されます。
+
+## 文字列操作系
+
+### TRIM
+- args0 対象文字列
+
+渡した文字列の前後の空白を取り除いた文字列を返します。
+
+### SPLIT
+- args0 対象文字列
+- args1 分割子の正規表現
+
+文字列を正規表現で分割します。戻り値は文字列の配列です。
+
+```
+$spl = "リンゴ, バナナ, メロン":Split["[ ,]+"];
+
+$spl:ElementAt[0]:Print //リンゴ
+$spl:ElementAt[1]:Print //バナナ
+```
+
+### REPLACE
+- args0 対象文字列
+- args1 検索正規表現
+- args2 置換文字列
+
+正規表現に一致した箇所を別の文字列で置換した文字列を返します。
+
+### SUBSTRING
+- args0 対象文字列
+- args1 開始位置
+- args2 文字数
+
+文字列の部分文字列を取得します。
+
+### LEFT
+- args0 対象文字列
+- args1 文字数
+
+文字列の左から指定文字数分の部分文字列を取得します。
+
+### RIGHT
+- args0 対象文字列
+- args1 文字数
+
+文字列の右から指定文字数分の部分文字列を取得します。
+
+### INDEXOF
+- args0 対象文字列
+- args1 文字位置
+
+文字列の指定位置にある一文字を取得します。戻り値は文字列型です。
+
+### LEN
+- args0 対象文字列
+
+文字列の文字数を取得します。
+
+## コレクション操作
+
+### ELEMENTAT
+- args0 コレクションオブジェクト
+- args1 インデクス
+
+配列などのコレクションのインデクス位置にある要素を返します。
+
+### COUNT
+- args0 コレクションオブジェクト
+
+配列などのコレクションの要素数を返します。
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

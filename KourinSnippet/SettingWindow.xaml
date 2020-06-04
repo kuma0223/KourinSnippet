@@ -1,35 +1,41 @@
 ﻿<Window x:Class="KourinSnippet.SettingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="設定" Height="390" Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" FontSize="16" Background="WhiteSmoke">
+        Title="動作設定" 
+        Width="400" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" SizeToContent="Height"
+        FontSize="16" Background="WhiteSmoke">
     <Window.Resources>
         <Style TargetType="CheckBox">
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
     </Window.Resources>
-    <Grid x:Name="X_Root">
+    
+    <StackPanel x:Name="X_Root">
         
-        <Canvas VerticalAlignment="Top" Height="100" Margin="0 5 0 0">
-            <StackPanel Orientation="Horizontal" Margin="5">
+        <StackPanel Margin="10 5">
+            <StackPanel Orientation="Horizontal" Margin="5 2">
                 <TextBlock Text="配置" Width="80" />
                 <TextBlock Text="X" Margin="22 0 5 0" />
                 <TextBox Width="80" TextAlignment="Right" Text="{Binding PosX}" />
                 <TextBlock Text="Y" Margin="20 0 5 0" />
                 <TextBox Width="80" TextAlignment="Right" Text="{Binding PosY}" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="5" Canvas.Top="30">
-                <TextBlock Text="ペーストキー" Width="230" />
+            <StackPanel Orientation="Horizontal" Margin="5 2">
+                <CheckBox IsChecked="{Binding Minimum}" Content="タスクトレイに格納" Margin="115 0 0 0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="5 2">
+                <TextBlock Text="貼り付けキー" Width="230" />
                 <TextBlock Text="Ctrl + " Width="50" />
                 <TextBox Width="30" TextAlignment="Center" Text="{Binding PasteKey}" MaxLength="1" />
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Margin="5" Canvas.Top="60">
-                <TextBlock Text="選択後にCtrl+Vを送るまでの間隔" Width="230" />
+            <StackPanel Orientation="Horizontal" Margin="5 2">
+                <TextBlock Text="貼り付け操作までの待機時間" Width="230" />
                 <TextBox TextAlignment="Right" Width="80" Text="{Binding Interval}" />
                 <TextBlock Text="ms" Margin="5 0" />
             </StackPanel>
-        </Canvas>
+        </StackPanel>
 
-        <Grid VerticalAlignment="Top" Height="100" Margin="0 110 0 0">
+        <Grid Height="100" Margin="5 5">
             <Canvas>
                 <TextBlock Text="定型文" Canvas.Left="5" FontSize="20" />
                 <CheckBox Content="有効" Canvas.Left="83" Canvas.Top="3" IsChecked="{Binding Snippet.enable}" />
@@ -49,7 +55,7 @@
             </Border>
         </Grid>
 
-        <Grid VerticalAlignment="Top" Height="100" Margin="0 220 0 0">
+        <Grid Height="120" Margin="5 5">
             <Canvas>
                 <TextBlock Text="履歴" Canvas.Left="5" FontSize="20" />
                 <CheckBox Content="有効" Canvas.Left="83" Canvas.Top="3" IsChecked="{Binding History.enable}" />
@@ -58,7 +64,7 @@
             <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="3" Margin="3 30 3 3">
                 <Canvas>
                     <StackPanel Orientation="Horizontal" Canvas.Top="5" Canvas.Left="5">
-                        <TextBlock Text="対応キー" Canvas.Left="5" Margin="0 0 10 0" />
+                        <TextBlock Text="対応キー" Margin="0 0 10 0" />
                         <CheckBox Content="Ctrl"  Margin="10 0" IsChecked="{Binding History.Hotkey.ctrl}" />
                         <CheckBox Content="Alt"   Margin="10 0" IsChecked="{Binding History.Hotkey.alt}" />
                         <CheckBox Content="Shift" Margin="10 0" IsChecked="{Binding History.Hotkey.shift}" />
@@ -66,10 +72,14 @@
                         <TextBox TextAlignment="Center" Width="25" MaxLength="1" Margin="10 0" Text="{Binding History.Hotkey.keystr}" />
                     </StackPanel>
                     <CheckBox Content="同じ文字列は複数保存しない" Canvas.Top="35" Canvas.Left="79" IsChecked="{Binding History.RemoveSameValue}" />
+                    <StackPanel Orientation="Horizontal" Canvas.Top="60" Canvas.Left="5">
+                        <TextBlock Text="保存件数" />
+                        <TextBox TextAlignment="Right" Width="60" MaxLength="3" Margin="10 0" Text="{Binding History.Count}" />
+                    </StackPanel>
                 </Canvas>
             </Border>
         </Grid>
-        
-        <TextBlock Text="一部の設定はアプリの再起動後に有効になります" VerticalAlignment="Bottom" Margin="5" Foreground="Tomato" />
-    </Grid>
+
+        <Label x:Name="X_Version" VerticalAlignment="Bottom" Background="#C44654" Foreground="White" Margin="0 10 0 0">Kourin snippet</Label>
+    </StackPanel>
 </Window>

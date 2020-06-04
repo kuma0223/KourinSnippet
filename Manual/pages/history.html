@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# 履歴機能
+
+クリップボードのコピー/切り取り履歴を複数件保存して任意に貼り付けを行います。
+履歴に保存されるのは文字データのみです。ファイルのコピー等は保存されません。
+
+## 使い方
+
+(Ctrl + Shift + V)のショートカットキーでクリップボード履歴を呼び出します。
+履歴から貼り付けたい文字を選んで、Enterキーまたはダブルクリックで決定します。
+バックスペースキーまたは範囲外のクリックでキャンセルします。
+
+![履歴](history.png)
+
+## 履歴の消去
+
+履歴はアプリケーションの終了時に削除されます。
+パスワードなど履歴をすぐに消したい場合は、タスクトレイメニューから「履歴クリア」を選択します。
+
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

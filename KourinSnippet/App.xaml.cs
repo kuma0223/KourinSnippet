@@ -14,6 +14,7 @@ namespace KourinSnippet
     public partial class App : Application
     {
         private System.Threading.Mutex mutex = null;
+        public static MyNotifyIcon NofityIcon { private set; get; }
 
         public App()
         {
@@ -34,12 +35,15 @@ namespace KourinSnippet
                 this.Shutdown();
                 return;
             }
+
+            NofityIcon = new MyNotifyIcon();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             if (Shared.Logger != null) Shared.Logger.write("ApplicationExit");
-            if(mutex != null) mutex.Close();
+            if (mutex != null) mutex.Close();
+            if (NofityIcon != null) NofityIcon.Dispose();
         }
 
         /// <summary>

@@ -8,11 +8,12 @@ namespace KourinSnippet
 {
     public class Setting
     {
+        public bool Minimum { get; set; } = true;
         public int PosX {get; set;}
         public int PosY {get; set;}
-        public bool PopupCenter {get; set;}
+        public bool PopupCenter {get; set;} = true;
         public char PasteKey { get; set; } = 'V';
-        public int Interval {get; set;}
+        public int Interval {get; set;} = 100;
         public SnippetSetting Snippet {get; set;}
         public HistorySetting History {get; set;}
     }
@@ -30,6 +31,7 @@ namespace KourinSnippet
         public bool enable {get; set;}
         public Hotkey Hotkey {get; set;}
         public bool RemoveSameValue {get; set;}
+        public int Count { get; set; } = 50;
     }
 
     public class Hotkey
