@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:KourinSnippet"
         mc:Ignorable="d" FontSize="14" WindowStyle="ToolWindow" WindowStartupLocation="CenterScreen"
         Title="InputDialog" Height="240" Width="300" Loaded="Window_Loaded">
-    <Grid>
+    <Grid KeyDown="Grid_KeyDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="40" />

@@ -5,7 +5,9 @@
         Activated="Window_Activated" Deactivated="Window_Deactivated" ShowInTaskbar="False" SizeChanged="Window_SizeChanged">
     <StackPanel Orientation="Horizontal">
         <Popup Placement="Right" x:Name="x_Tooltip"  MaxHeight="350">
-            <TextBlock x:Name="x_TooltipText" TextAlignment="Left" Padding="5" FontSize="12" Background="#fdeff2" Foreground="Black"></TextBlock>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <TextBox x:Name="x_TooltipText" BorderThickness="0" IsReadOnly="True" TextAlignment="Left" Padding="5" FontSize="12" Background="#fdeff2" Foreground="Black" />
+            </ScrollViewer>
         </Popup>
         <Grid>
             <StackPanel Orientation="Horizontal">

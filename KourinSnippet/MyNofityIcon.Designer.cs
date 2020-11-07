@@ -36,7 +36,8 @@
             this.Clear = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.Setting = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.Help = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.Close = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             // 
@@ -60,10 +61,11 @@
             this.Clear,
             this.toolStripSeparator1,
             this.Setting,
-            this.toolStripSeparator2,
+            this.Help,
+            this.toolStripSeparator4,
             this.Close});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 154);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(167, 176);
             this.contextMenuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.contextMenuStrip1_ItemClicked);
             this.contextMenuStrip1.Click += new System.EventHandler(this.contextMenuStrip1_Click);
             // 
@@ -107,10 +109,16 @@
             this.Setting.Size = new System.Drawing.Size(166, 22);
             this.Setting.Text = "設定";
             // 
-            // toolStripSeparator2
+            // Help
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(163, 6);
+            this.Help.Name = "Help";
+            this.Help.Size = new System.Drawing.Size(166, 22);
+            this.Help.Text = "マニュアル";
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(163, 6);
             // 
             // Close
             // 
@@ -130,9 +138,10 @@
         private System.Windows.Forms.ToolStripMenuItem Clear;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem Setting;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem Close;
         private System.Windows.Forms.ToolStripMenuItem Open;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem Help;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
