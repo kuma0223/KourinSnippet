@@ -19,14 +19,19 @@ InputDialog["名前", "登録日", "期限"]
 $name = $$Input1
 $day1 = $$Input2
 $day2 = $$Input3
+$today = format["{0:yyyy年MM月dd日}", date]
 
-$str = ""
-$str = $str & $name & "様、いつもご利用いただきありがとうございます。\n"
-$str = $str & "ご登録日の" & $day1 & "より1カ月が経過いたしましたので、アンケートのご協力をお願いします。\n"
-$str = $str & "ご回答いただける場合は" & $day2 & "までに返信していただけると幸いです。\n"
-$str = $str & "よろしくお願いいたします。\n\n"
-$str = $str & format["{0:yyyy年MM月dd日}", date] & " サービス改善担当"
-$str
+$str = $"
+{$name} 様
+弊社サービスをご利用いただきありがとうございます。
+ご登録日の{$day1}より1ヵ月が経過した会員様にアンケートのご協力をお願いしております。
+ご回答いただける場合は{$day2}までに返信していただけると幸いです。
+何卒宜しくお願い致します。
+
+{$today} サービス改善担当
+"$
+
+$str:Deploy
 ```
 
 ## いろいろな処理
@@ -120,7 +125,7 @@ START["https://eow.alc.co.jp/search?q=" & Clipboard]
 ```
 
 ### IPアドレスを変更する
-第四引数をtrueにすると管理者モードでコマンドを実行することができます。
+START関数の第四引数をtrueにすると管理者モードでコマンドを実行することができます。
 
 ```
 //静的IPアドレスに設定する
@@ -130,9 +135,10 @@ $subnet = "255.255.255.0"
 $gate   = "192.168.1.254"
 $dns    = "192.168.10.254"
 
-$cmd = "netsh interface ipv4 set address " & $name & " static " & $ip & " " & $subnet & " " & $gate
-$cmd = $cmd & "& netsh interface ipv4 add dns " & $name & " " & $dns
+$cmd = "netsh interface ipv4 set address {$name} static {$ip} {$subnet} {$gate}"
+$cmd = $cmd & "& netsh interface ipv4 add dns {$name} {$dns}"
 $cmd = $cmd & "& pause"
+$cmd = $cmd:Deploy
 
 START["cmd", "/C " & $cmd, false, true]
 ```
@@ -141,9 +147,10 @@ START["cmd", "/C " & $cmd, false, true]
 //DHCPに設定する
 $name = "\"イーサネット\""
 
-$cmd = "netsh interface ipv4 set address name=" & $name & " source=dhcp"
-$cmd = $cmd & "& netsh interface ipv4 set dns " & $name & " dhcp"
-$cmd = $cmd & "& timeout 5"
+$cmd = "netsh interface ipv4 set address name={$name} source=dhcp"
+$cmd = $cmd & "& netsh interface ipv4 set dns {$name} dhcp"
+$cmd = $cmd & "& pause"
+$cmd = $cmd:Deploy
 
 START["cmd", "/C " & $cmd, false, true]
 ```

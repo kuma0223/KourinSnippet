@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,8 +26,12 @@ namespace KourinSnippet
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            NofityIcon = new MyNotifyIcon();
+            
             // 多重起動チェック
-            mutex = new System.Threading.Mutex(false, this.GetType().Assembly.GetName().Name);
+            var mutexName = this.GetType().Assembly.GetName().Name;
+            mutex = new System.Threading.Mutex(false, mutexName);
+
             if (mutex.WaitOne(0, false) == false)
             {
                 MessageBox.Show("既に起動しています。", this.GetType().Assembly.GetName().Name);
@@ -35,8 +40,6 @@ namespace KourinSnippet
                 this.Shutdown();
                 return;
             }
-
-            NofityIcon = new MyNotifyIcon();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

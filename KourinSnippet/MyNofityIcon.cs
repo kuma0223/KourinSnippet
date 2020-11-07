@@ -17,6 +17,7 @@ namespace KourinSnippet
         public Action Clear_Click;
         public Action Close_Click;
         public Action Open_Click;
+        public Action Help_Click;
 
         public MyNotifyIcon() {
             InitializeComponent();
@@ -44,6 +45,7 @@ namespace KourinSnippet
             if(e.ClickedItem == Setting) Setting_Click();
             if(e.ClickedItem == Close) Close_Click();
             if(e.ClickedItem == Open) Open_Click();
+            if (e.ClickedItem == Help) Help_Click();
         }
 
         private void notifyIcon1_Click(object sender, EventArgs e) {

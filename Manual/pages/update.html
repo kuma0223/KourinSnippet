@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" type="text/css" href="../style.css" />
+<script src="../MDParser.js" type="text/javascript"></script>
+</head>
+<body>
+<script type="text/plain" id="Markdown">
+# 更新履歴
+
+### Ver3.1 / 2020年11月22日
+- 添付のkourinスクリプトを5.1に変更
+    - 整形済み文字列リテラル、Deploy関数が利用できるようになりました
+- 動作改善
+    - 履歴/定型文選択のプレビューで行が多い場合にスクロールできるように
+    - 履歴/定型文選択のプレビューでテキスト選択・コピー操作ができるように
+    - 定型文選択でグループをクリックで子グループ展開する動作を追加
+    - InputDialogのウィンドウでエンターキーで閉じる動作を追加
+    - @@listの定型文で値がカラーコードの項目の選択肢の文字色がその色になるように
+    - タスクトレイ右クリックメニューにマニュアルを追加
+- 不具合修正
+    - @@listの定型文で2つ目の//以降が含まれないのを含まれるように修正
+- 定型文サンプルを一部変更
+- マニュアル更新
+
+### Ver3.0
+一般公開初版
+
+</script>
+
+<div id="box1">
+</div>
+<script type="text/javascript">
+    window.onload=function(){
+        var md = document.getElementById('Markdown').textContent;
+        var paser = new MDParser();
+        paser.ImageRoot = "../img/"
+        document.getElementById("box1").innerHTML = paser.BuildHtml(md);
+    }
+</script>
+</body>
+</html>

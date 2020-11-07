@@ -92,10 +92,22 @@ namespace KourinSnippet
             setToolTip((SnippetItem)((ListBox)sender).SelectedItem);
         }
 
+        private void Item_Click(object sender, MouseButtonEventArgs e) {
+            var item = (sender as ListBoxItem).DataContext as SnippetItem;
+
+            if (item.Type == SnippetItem.ItemType.Directory) {
+                var lb = ParentListbox(item);
+                OpenItem(lb, lb.SelectedIndex);
+                e.Handled = true;
+            }
+        }
+
         private void Item_DoubleClick(object sender, MouseButtonEventArgs e) {
             var item = (sender as ListBoxItem).DataContext as SnippetItem;
+            
             if (item.Type != SnippetItem.ItemType.Directory) {
                 ClosePopup(item);
+                e.Handled = true;
             }
         }
         
@@ -139,6 +151,13 @@ namespace KourinSnippet
         private int ListboxIndex(object control)
         {
             return int.Parse(((Control)control).Name.Replace("ItemList", ""));
+        }
+
+        private ListBox ParentListbox(SnippetItem item) {
+            foreach(var x in listboxs) {
+                if(x.Items.Contains(item)) return x;
+            }
+            return null;
         }
 
         private void setToolTip(SnippetItem item)
