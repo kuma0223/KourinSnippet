@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace KourinSnippet
 {
@@ -12,6 +13,8 @@ namespace KourinSnippet
         public string Name {get; set;}
         public string Text {get; set;}
         public List<SnippetItem> Children{get; set;}
+
+        public Brush Foreground { get; set; } = null;
 
         public override string ToString()
         {

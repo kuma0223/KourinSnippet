@@ -28,7 +28,6 @@ namespace KourinSnippet
         private const int HotkeyId1 = 0x1000;
         private const int HotkeyId2 = 0x1001;
         private const int HotkeyId3 = 0x1002;
-        private const int ClipHistoryNum = 50;
         
         private KourinEngine kourin;
         private HotkeySetter HKSetter = new HotkeySetter();
@@ -55,10 +54,12 @@ namespace KourinSnippet
             App.NofityIcon.Folder_Click = () => Folder_Click(null, null);
             App.NofityIcon.Setting_Click = () => Setting_Click(null, null);
             App.NofityIcon.Clear_Click = () => Clear_Click(null, null);
+            App.NofityIcon.Help_Click = () => { Help_Click(null, null); };
             App.NofityIcon.Close_Click = () => Close_Executed(null, null);
             App.NofityIcon.Open_Click = () => {
                 if(this.IsVisible) this.Hide();
-                else this.Show(); };
+                else this.Show();
+            };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -207,6 +208,7 @@ namespace KourinSnippet
                     txt = re.ReadToEnd();
                     re.Dispose();
                 }
+
                 if(opt == "") {
                     //単一テキスト
                     var itm = new SnippetItem();
@@ -216,14 +218,25 @@ namespace KourinSnippet
                     ret.Add(itm);
                 }else if(opt == "list") {
                     //リスト
-                    var re = new StringReader(txt);
                     foreach(var s in Regex.Split(txt, Environment.NewLine)) {
                         if(s.Trim()=="") continue;
-                        var ss = Regex.Split(s, "//");
                         var itm = new SnippetItem();
                         itm.Type = SnippetItem.ItemType.Text;
-                        itm.Name = ss[0].Trim();
-                        itm.Text = (ss.Length > 1 ? ss[1] : ss[0]).Trim();
+
+                        var ss = Regex.Split(s, "(\\s//|//\\s)");
+
+                        if(ss.Length > 2) {
+                            itm.Name = ss[0].Trim();
+                            itm.Text = string.Join("", ss.Skip(2)).Trim();
+                        } else {
+                            itm.Name = ss[0].Trim();
+                            itm.Text = itm.Name;
+                        }
+
+                        if(Regex.IsMatch(itm.Text, "^#[0-9a-fA-F]{6}$")) {
+                            itm.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(itm.Text));
+                        }
+
                         ret.Add(itm);
                     }
                 }
@@ -300,6 +313,14 @@ namespace KourinSnippet
         {
             ClipbordHistory.Clear();
             MessageBox.Show("クリップボード履歴をクリアしました。", "情報", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        /// <summary>
+        /// ヘルプボタン
+        /// </summary>
+        private void Help_Click(object sender, RoutedEventArgs e) {
+            var path = Shared.MyPath + "/Manual/index.html";
+            using (var p = System.Diagnostics.Process.Start(path)) {
+            }            
         }
         /// <summary>
         /// 最小化ボタン
