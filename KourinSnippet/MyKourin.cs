@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using Kourin;
+using Karin;
 
 namespace KourinSnippet
 {
@@ -26,30 +26,30 @@ namespace KourinSnippet
             Echo = true;
         }
 
-        public static KourinEngine CreateEngine()
+        public static KarinEngine CreateEngine()
         {
-            var kourin = new KourinEngine();
+            var kourin = new KarinEngine();
 
             foreach (var dll in System.IO.Directory.GetFiles(Shared.MyPath + "\\Plugin")) {
-                kourin.loadPluginDll(dll);
+                kourin.LoadPluginDll(dll);
             }
 
             //追加関数
 
             //エコー状態の取得または設定をします。
             //引数[0]: true/false 
-            kourin.setFunction(new KourinFunction("ECHO", (args)=>{
+            kourin.SetFunction(new KarinFunction("ECHO", (args)=>{
                 if(args.Length==0) return Echo;
                 else{ Echo = (bool)args[0]; return null; }
             }));
 
             //クリップボードのテキストを取得します。
-            kourin.setFunction(new KourinFunction("CLIPBOARD", (args)=>{
+            kourin.SetFunction(new KarinFunction("CLIPBOARD", (args)=>{
                 return System.Windows.Clipboard.GetText();
             }));
             
             //出力に1行追加します。
-            kourin.setFunction(new KourinFunction("PRINT", (args)=>{
+            kourin.SetFunction(new KarinFunction("PRINT", (args)=>{
                 if(Output == null) return null;
                 if(args.Length == 0) return null;
 
@@ -59,7 +59,7 @@ namespace KourinSnippet
             }));
 
             //外部プロセスを実行します。
-            kourin.setFunction(new KourinFunction("START", (args)=>{
+            kourin.SetFunction(new KarinFunction("START", (args)=>{
                 if(args.Length == 0) return null;
                 var filename = args[0].ToString();
                 var argument = args.Length > 1 ? args[1].ToString() : null;
@@ -81,7 +81,7 @@ namespace KourinSnippet
             }));
             
             //入力ダイアログを表示します。
-            kourin.setFunction(new KourinFunction("InputDialog", (args) => {
+            kourin.SetFunction(new KarinFunction("InputDialog", (args) => {
                 if(args.Length == 0) return null;
                 var wind = new InputDialog();
                 wind.Label1 = args.Length > 0 ? args[0].ToString() : null;
@@ -89,67 +89,66 @@ namespace KourinSnippet
                 wind.Label3 = args.Length > 2 ? args[2].ToString() : null;
 
                 var ret = wind.ShowDialog();
-
-                kourin.variables["Input1"] = wind.Text1;
-                kourin.variables["Input2"] = wind.Text2;
-                kourin.variables["Input3"] = wind.Text3;
+                kourin.SetVariable("Input1", wind.Text1);
+                kourin.SetVariable("Input2", wind.Text2);
+                kourin.SetVariable("Input3", wind.Text3);
 
                 return ret.Value;
             }));
 
             //コレクションのインデクス位置のデータを返します。
-            kourin.setFunction(new KourinFunction("ElementAt", (args)=>{
+            kourin.SetFunction(new KarinFunction("ElementAt", (args)=>{
                 return (args[0] as IEnumerable<object>).ElementAt<object>((int)args[1]);
             }));
             
             //コレクションの要素数を返します。
-            kourin.setFunction(new KourinFunction("COUNT", (args)=>{
+            kourin.SetFunction(new KarinFunction("COUNT", (args)=>{
                 return (args[0] as IEnumerable<object>).Count();
             }));
 
             //文字列操作関連
 
             //TRIMします。
-            kourin.setFunction(new KourinFunction("TRIM", (args)=>{
+            kourin.SetFunction(new KarinFunction("TRIM", (args)=>{
                 return args[0].ToString().Trim();
             }));
             
             //Regex.Splitします。
-            kourin.setFunction(new KourinFunction("SPLIT", (args)=>{
+            kourin.SetFunction(new KarinFunction("SPLIT", (args)=>{
                 var r = new System.Text.RegularExpressions.Regex((string)args[1].ToString());
                 return r.Split((string)args[0]);
             }));
 
             //Regex.Replacecします。
-            kourin.setFunction(new KourinFunction("REPLACE", (args)=>{
+            kourin.SetFunction(new KarinFunction("REPLACE", (args)=>{
                 var r = new System.Text.RegularExpressions.Regex((string)args[1].ToString());
                 return r.Replace((string)args[0], (string)args[2]);
             }));
             
             //Substringします。
-            kourin.setFunction(new KourinFunction("SUBSTRING", (args)=>{
+            kourin.SetFunction(new KarinFunction("SUBSTRING", (args)=>{
                 return ((string)args[0]).Substring((int)args[1], (int)args[2]);
             }));
 
             //左Substringします。
-            kourin.setFunction(new KourinFunction("LEFT", (args)=>{
+            kourin.SetFunction(new KarinFunction("LEFT", (args)=>{
                 var s = (string)args[0];
                 return s.Substring(0, (int)args[1]);
             }));
 
             //右Substringします。
-            kourin.setFunction(new KourinFunction("RIGHT", (args)=>{
+            kourin.SetFunction(new KarinFunction("RIGHT", (args)=>{
                 var s = (string)args[0];
                 return s.Substring(s.Length-(int)args[1], (int)args[1]);
             }));
             
             //Indexofします。
-            kourin.setFunction(new KourinFunction("INDEXOF", (args)=>{
+            kourin.SetFunction(new KarinFunction("INDEXOF", (args)=>{
                 return ((string)args[0]).IndexOf((string)args[1]);
             }));
 
             //文字列の文字数を返します。
-            kourin.setFunction(new KourinFunction("LEN", (args)=>{
+            kourin.SetFunction(new KarinFunction("LEN", (args)=>{
                 return ((string)args[0]).Length;
             }));
 

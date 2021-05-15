@@ -53,10 +53,5 @@
                 <Image Source="image/Vanish.png" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Button>
         </StackPanel>
-
-        <StackPanel Orientation="Horizontal" UseLayoutRounding="True" Height="25">
-            <Rectangle Width="10" MouseLeftButtonDown="Window_MouseLeftButtonDown" Fill="LightGray"></Rectangle>
-            <Button Width="25" Click="Functions_Click" Content="Fu" />
-        </StackPanel>
     </StackPanel>
 </Window>
