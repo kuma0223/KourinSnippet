@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 //using System.Windows.Shapes;
 using System.Runtime.InteropServices;
-using Kourin;
+using Karin;
 using Bank;
 using System.Text.RegularExpressions;
 
@@ -29,7 +29,7 @@ namespace KourinSnippet
         private const int HotkeyId2 = 0x1001;
         private const int HotkeyId3 = 0x1002;
         
-        private KourinEngine kourin;
+        private KarinEngine kourin;
         private HotkeySetter HKSetter = new HotkeySetter();
         private ClipboardChecker CBChecker = new ClipboardChecker();
         
@@ -329,6 +329,7 @@ namespace KourinSnippet
         {
             this.Hide();
         }
+        /*
         /// <summary>
         /// 管理用 関数一覧
         /// </summary>
@@ -339,6 +340,7 @@ namespace KourinSnippet
                 }   
             }
         }
+        */
 
         /// <summary>
         /// クリップボード監視ハンドラ
@@ -454,7 +456,7 @@ namespace KourinSnippet
                     default:
                         text = target.Text; break;
                 }
-            }catch(KourinException ex){
+            }catch(KarinException ex){
                 Shared.Logger.write(LogTypes.ERROR, "スクリプトエラー/" + ex.Message + Environment.NewLine + ex.ScriptStackTrace);
                 MessageBox.Show("スクリプトエラー/" + ex.Message + Environment.NewLine + ex.ScriptStackTrace);
             }catch(Exception ex) {
@@ -513,7 +515,7 @@ namespace KourinSnippet
             MyKourin.Output = ""; //出力初期化
             //実行
             //結果値がnullでなくエコー設定がONの場合のみ出力に追加される。
-            var ret = kourin.execute(target.Text);
+            var ret = kourin.Execute(target.Text);
             if (ret != null) { 
                 if(MyKourin.Output.Length>0) MyKourin.Output += Environment.NewLine;
                 MyKourin.Output += ret;
